@@ -68,6 +68,17 @@ class Sudoku
     }
   }
 
+  public String toString2()
+  {
+    String result = new String();
+    for(int row = 0; row < 9; row++){
+      for(int col = 0; col < 9; col++){
+        result = result + String.valueOf(this.board[row][col]);
+      }
+    }
+    return result;
+  }
+
   // public boolean isValid()
   // {
   //   //
@@ -104,7 +115,7 @@ class Sudoku
   /**
   * Checks to see if a value exists in specified box
   */
-  public boolean doesBoxContain(int row, int col, int val)
+  private boolean doesBoxContain(int row, int col, int val)
   {
     boolean result = false;
     row = (row/3)*3;
@@ -117,6 +128,30 @@ class Sudoku
       }
     }
     return result;
+  }
+
+  public int fillSpot(Spot sq)
+  {
+    int result = 0;
+    int finalResult = 0;
+    int Counter = 0;
+    int row = sq.getRow();
+    int col = sq.getCol();
+    for(int value = 1; value < 10; value++){
+      if(
+      (this.board[row][col] == 0) &&
+      (!doesRowContain(row, value)) &&
+      (!doesColContain(col, value)) &&
+      (!doesBoxContain(row, col, value))
+      ){
+        Counter++;
+        result = value;
+      }
+    }
+    if(Counter == 1){
+      finalResult = result;
+    }
+    return finalResult;
   }
 
   public Spot rowFill(int row, int val)
