@@ -30,6 +30,6 @@ public class test2a{
     Sudoku p;
     System.out.println("Author: " + Sudoku.myName());
     p = new Sudoku(s[0]);
-    System.out.println(p.doesBoxContain(3, 4, 8));
+    System.out.println(p.doesBoxContain(3, 4, 3));
   }
 }

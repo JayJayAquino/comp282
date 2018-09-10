@@ -70,7 +70,7 @@ class Sudoku
 
   // public boolean isValid()
   // {
-  //
+  //   //
   // }
 
   /**
@@ -107,14 +107,92 @@ class Sudoku
   public boolean doesBoxContain(int row, int col, int val)
   {
     boolean result = false;
-    for(int boxRow = (row/3)*3; boxRow < boxRow+2; boxRow++){
-      for(int boxCol = (col/3)*3; boxCol < boxCol+2; boxCol++){
+    row = (row/3)*3;
+    col = (col/3)*3;
+    for(int boxRow = row; boxRow < row+3; boxRow++){
+      for(int boxCol = col; boxCol < col+3; boxCol++){
         if(this.board[boxRow][boxCol] == val){
           result = true;
         }
       }
     }
     return result;
+  }
+
+  public Spot rowFill(int row, int val)
+  {
+    Spot sq = new Spot(0,0);
+    Spot temp = null;
+    int Counter = 0;
+    if(!doesRowContain(row, val)){
+      for(int col = 0; col < 9; col++){
+        if(
+        (this.board[row][col] == 0) &&
+        (!doesColContain(col, val)) &&
+        (!doesBoxContain(row, col, val))
+        ){
+          Counter++;
+          sq.setRow(row);
+          sq.setCol(col);
+        }//if
+      }//for
+      if(Counter == 1){
+        temp = new Spot(sq.getRow(), sq.getCol());
+      }//if
+    }//if
+    return temp;
+  }
+
+  public Spot colFill(int col, int val)
+  {
+    Spot sq = new Spot(0,0);
+    Spot temp = null;
+    int Counter = 0;
+    if(!doesColContain(col, val)){
+      for(int row = 0; row < 9; row++){
+        if(
+        (this.board[row][col] == 0) &&
+        (!doesRowContain(row, val)) &&
+        (!doesBoxContain(row, col, val))
+        ){
+          Counter++;
+          sq.setRow(row);
+          sq.setCol(col);
+        }
+      }
+      if(Counter == 1){
+        temp = new Spot(sq.getRow(), sq.getCol());
+      }
+    }
+    return temp;
+  }
+
+  public Spot boxFill(int rowbox, int colbox, int val)
+  {
+    rowbox = (rowbox/3) * 3;
+    colbox = (colbox/3) * 3;
+    Spot sq = new Spot(0,0);
+    Spot temp = null;
+    int Counter = 0;
+    if(!doesBoxContain(rowbox, colbox, val)){
+      for(int row = rowbox; row < rowbox+3; row++){
+        for(int col = colbox; col < colbox+3; col++){
+          if(
+          (this.board[row][col] == 0) &&
+          (!doesRowContain(row, val)) &&
+          (!doesColContain(col, val))
+          ){
+            Counter++;
+            sq.setRow(row);
+            sq.setCol(col);
+          }
+        }
+      }
+      if(Counter == 1){
+        temp = new Spot(sq.getRow(), sq.getCol());
+      }
+    }
+    return temp;
   }
 
   public static String myName()
