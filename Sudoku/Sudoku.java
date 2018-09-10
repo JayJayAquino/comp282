@@ -79,10 +79,71 @@ class Sudoku
     return result;
   }
 
-  // public boolean isValid()
-  // {
-  //   //
-  // }
+  public boolean isValid()
+  {
+    boolean rowResult = true;
+    boolean colResult = true;
+    boolean boxResult = true;
+    boolean finalResult = false;
+    int Counter;
+    int row;
+    int col;
+    int val;
+    int boxRow;
+    int boxCol;
+    // Check every row
+    for(row = 0; row < 9; row++){
+      for(val = 1; val < 10; val++){
+        Counter = 0;
+        for(col = 0; col < 9; col++){
+          if(this.board[row][col] == val){
+            Counter++;
+          }//if
+          if(Counter > 1){
+            rowResult = false;
+          }//if
+        }//for
+      }//for
+    }//for
+
+    for(col = 0; col < 9; col++){
+      for(val = 1; val < 10; val++){
+        Counter = 0;
+        for(row = 0; row < 9; row++){
+          if(this.board[row][col] == val){
+            Counter++;
+          }//if
+          if(Counter > 1){
+            colResult = false;
+          }
+        }
+      }
+    }
+
+    for(row = 0; row < 9; row += 3){
+      for(val = 1; val < 10; val++){
+        for(col = 0; col < 9; col += 3){
+          Counter = 0;
+          for(boxRow = row; boxRow < row+3; boxRow++){
+            for(boxCol = col; boxCol < col+3; boxCol++){
+              if(this.board[boxRow][boxCol] == val){
+                Counter++;
+              }
+              if(Counter > 1){
+                boxResult = false;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if(rowResult == true && colResult == true && boxResult == true){
+      finalResult = true;
+    }
+
+    return finalResult;
+  }
 
   /**
   * Checks to see if a value exists in specified row
@@ -130,7 +191,7 @@ class Sudoku
     return result;
   }
 
-  public int fillSpot(Spot sq)
+  private int fillSpot(Spot sq)
   {
     int result = 0;
     int finalResult = 0;
@@ -154,7 +215,7 @@ class Sudoku
     return finalResult;
   }
 
-  public Spot rowFill(int row, int val)
+  private Spot rowFill(int row, int val)
   {
     Spot sq = new Spot(0,0);
     Spot temp = null;
@@ -178,7 +239,7 @@ class Sudoku
     return temp;
   }
 
-  public Spot colFill(int col, int val)
+  private Spot colFill(int col, int val)
   {
     Spot sq = new Spot(0,0);
     Spot temp = null;
@@ -202,7 +263,7 @@ class Sudoku
     return temp;
   }
 
-  public Spot boxFill(int rowbox, int colbox, int val)
+  private Spot boxFill(int rowbox, int colbox, int val)
   {
     rowbox = (rowbox/3) * 3;
     colbox = (colbox/3) * 3;
