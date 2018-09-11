@@ -62,6 +62,7 @@ public class test2a{
     p.solve();
     System.out.print(p.toString());
     System.out.println(p.isComplete());
+    System.out.println(p.isValid());
     // System.out.println(p.doesBoxContain(3, 4, 3));
     // System.out.println(p.rowFill(7,4));
     // sp = p.rowFill(7,4);

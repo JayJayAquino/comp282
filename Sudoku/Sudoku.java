@@ -54,7 +54,7 @@ class sudoku
 
   // public sudoku(sudoku p)
   // {
-  // 
+  //
   // }
 
   public String toString()
@@ -350,55 +350,31 @@ class sudoku
         }//for
       }//for
 
-      for(col = 0; col < 9; col++){
-        for(val = 1; val < 10; val++){
-          s = colFill(col, val);
-          if(s != null){
-            this.board[s.getRow()][col] = val;
-            changes = true;
-          }//if
-        }//for
-      }//for
-
-      for(row = 0; row < 9; row += 3){
-        for(col = 0; col < 9; col += 3){
+      if(changes == false){
+        for(col = 0; col < 9; col++){
           for(val = 1; val < 10; val++){
-            s = boxFill(row, col, val);
+            s = colFill(col, val);
             if(s != null){
-              this.board[row][col] = val;
+              this.board[s.getRow()][col] = val;
               changes = true;
             }//if
           }//for
         }//for
-      }//for
+      }//if
 
-      // for(row = 0; row < 9; row++){
-      //   for(col = 0; col < 9; col++){
-      //     for(val = 1; val < 10; val++){
-      //       fillSpotSpot = rowFill(row, val);
-      //       if(fillSpotSpot != null){
-      //         fillSpotVal = fillSpot(fillSpotSpot);
-      //         if(fillSpotVal != 0 && this.board[row][col] == 0){
-      //           this.board[row][col] = fillSpotVal;
-      //         }
-      //       }
-      //       fillSpotSpot = colFill(col, val);
-      //       if(fillSpotSpot != null && this.board[row][col] == 0){
-      //         fillSpotVal = fillSpot(fillSpotSpot);
-      //         if(fillSpotVal != 0){
-      //           this.board[row][col] = fillSpotVal;
-      //         }
-      //       }
-      //       fillSpotSpot = boxFill(row, col, val);
-      //       if(fillSpotSpot != null && this.board[row][col] == 0){
-      //         fillSpotVal = fillSpot(fillSpotSpot);
-      //         if(fillSpotVal != 0){
-      //           this.board[row][col] = fillSpotVal;
-      //         }
-      //       }
-      //     }//for
-      //   }//for
-      // }//for
+      if(changes == false){
+        for(row = 0; row < 9; row += 3){
+          for(col = 0; col < 9; col += 3){
+            for(val = 1; val < 10; val++){
+              s = boxFill(row, col, val);
+              if(s != null){
+                this.board[row][col] = val;
+                changes = true;
+              }//if
+            }//for
+          }//for
+        }//for
+      }//if
 
     }//while
   }
