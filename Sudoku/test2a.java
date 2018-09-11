@@ -43,24 +43,25 @@ public class test2a{
     sudoku p;
     Spot sp = null;
     System.out.println("Author: " + sudoku.myName());
-    p = new sudoku(s[2]);
+    p = new sudoku(s[0]);
     //
-    for(int i = 0; i<9; i++){
-    sp = p.colFill(i,4);
-    System.out.println(sp);
-    if(sp != null){
-      System.out.println(sp.getRow());
-      System.out.println(sp.getCol());
-
-      System.out.println(p.fillSpot(sp));
-    }
-  }
+  //   for(int i = 0; i<9; i++){
+  //   sp = p.colFill(i,4);
+  //   System.out.println(sp);
+  //   if(sp != null){
+  //     System.out.println(sp.getRow());
+  //     System.out.println(sp.getCol());
+  //
+  //     System.out.println(p.fillSpot(sp));
+  //   }
+  // }
 
 
     // System.out.println(p.rowFill(4,9));
-    // System.out.println(p.isValid());
-    // p.solve();
-    // System.out.print(p.toString());
+    System.out.println(p.isValid());
+    p.solve();
+    System.out.print(p.toString());
+    System.out.println(p.isComplete());
     // System.out.println(p.doesBoxContain(3, 4, 3));
     // System.out.println(p.rowFill(7,4));
     // sp = p.rowFill(7,4);
