@@ -52,10 +52,16 @@ class sudoku
     }//for
   }
 
-  // public sudoku(sudoku p)
-  // {
-  //
-  // }
+  public sudoku(sudoku p)
+  {
+    int temp[][] = new int[9][9];
+    int row, col;
+    for(row = 0; row < 9; row++){
+      for(col = 0; col < 9; col++){
+        temp[row][col] = this.board[row][col];
+      }
+    }
+  }
 
   public String toString()
   {
@@ -81,12 +87,12 @@ class sudoku
     int row, col;
     for(row = 0; row < 9; row++){
       for(col = 0; col < 9; col++){
-        temp[col][8-row] = board[row][col];
+        temp[col][8-row] = this.board[row][col];
       }
     }
     for(row = 0; row < 9; row++){
       for(col = 0; col < 9; col++){
-        board[row][col] = temp[row][col];
+        this.board[row][col] = temp[row][col];
       }
     }
   }
