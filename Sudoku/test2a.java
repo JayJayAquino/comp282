@@ -40,10 +40,10 @@ public class test2a{
         }
     };
 
-    Sudoku p;
+    sudoku p;
     Spot sp = new Spot(0,0);
-    System.out.println("Author: " + Sudoku.myName());
-    p = new Sudoku(s[1]);
+    System.out.println("Author: " + sudoku.myName());
+    p = new sudoku(s[1]);
     System.out.println(p.isValid());
     // System.out.println(p.doesBoxContain(3, 4, 3));
     // System.out.println(p.rowFill(7,4));

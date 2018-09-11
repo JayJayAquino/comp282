@@ -30,19 +30,19 @@ class Spot
 }
 
 
-class Sudoku
+class sudoku
 {
   private int board [][];
 
-  // public sudoku()
-  // {
-  //   //
-  // }
+  public sudoku()
+  {
+    //
+  }
 
   /**
   * Construct a new board and cast the string array to int array
   */
-  public Sudoku(String s[])
+  public sudoku(String s[])
   {
     this.board = new int[9][9];
     for(int row = 0; row < 9; row++){
@@ -291,10 +291,63 @@ class Sudoku
     return temp;
   }
 
+  public void solve()
+  {
+    boolean changes = true;
+    Spot s = new Spot(0,0);
+    int row;
+    int col;
+    int box;
+    int val;
+    int fillSpotVal;
+    while(changes == true){
+      changes = false;
+      for(row = 0; row < 9; row++){
+        for(val = 1; val < 10; val++){
+          s = rowFill(row, val);
+          if(s != null){
+            fillSpotVal = fillSpot(s);
+            if(fillSpotVal != 0){
+              this.board[s.getRow()][s.getCol()] = fillSpotVal;
+              changes = true;
+            }
+          }
+        }
+      }
+
+      for(col = 0; col < 9; col++){
+        for(val = 1; val < 10; val++){
+          s = colFill(col, val);
+          if(s != null){
+            fillSpotVal = fillSpot(s);
+            if(fillSpotVal != 0){
+              this.board[s.getRow()][s.getCol()] = fillSpotVal;
+              changes = true;
+            }
+          }
+        }
+      }
+
+      for(row = 0; row < 9; row += 3){
+        for(col = 0; col < 9; col += 3){
+          for(val = 1; val < 10; val++){
+            s = boxFill(row, col, val);
+            if(s != null){
+              fillSpotVal = fillSpot(s);
+              if(fillSpotVal != 0){
+                this.board[s.getRow()][s.getCol()] = fillSpotVal;
+                changes = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
   public static String myName()
   {
     return "John Aquino";
   }
-
-
 }
