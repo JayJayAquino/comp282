@@ -52,6 +52,29 @@ class sudoku
     }//for
   }
 
+  public sudoku(sudoku p)
+  {
+    this.board = p.board;
+  }
+
+  public String toString()
+  {
+    String result = "";
+    for(int row = 0; row < this.board.length; row++){
+      for(int col = 0; col < this.board[row].length; col++){
+        if((col != 0) && (col % 3 == 0)){
+          result = result + "|";
+        }
+        result = result + String.valueOf(this.board[row][col]);
+      }
+      result = result + "\n";
+      if((row + 1) % 3 == 0){
+        result = result + "------------\n";
+      }
+    }
+    return result;
+  }
+
   public void rotate()
   {
     int [][] temp = new int[9][9];
@@ -143,6 +166,20 @@ class sudoku
     }
 
     return finalResult;
+  }
+
+  public boolean isComplete()
+  {
+    boolean result = true;
+    for(int row = 0; row < 9; row++){
+      for(int col = 0; col < 9; col++){
+        if(this.board[row][col] == 0){
+          result = false;
+        }
+      }
+    }
+
+    return result;
   }
 
   /**
@@ -294,7 +331,7 @@ class sudoku
   public void solve()
   {
     boolean changes = true;
-    Spot s = new Spot(0,0);
+    Spot s = null;
     int row;
     int col;
     int box;
@@ -308,7 +345,7 @@ class sudoku
           if(s != null){
             fillSpotVal = fillSpot(s);
             if(fillSpotVal != 0){
-              this.board[s.getRow()][s.getCol()] = fillSpotVal;
+              this.board[row][s.getCol()] = fillSpotVal;
               changes = true;
             }
           }
@@ -321,7 +358,7 @@ class sudoku
           if(s != null){
             fillSpotVal = fillSpot(s);
             if(fillSpotVal != 0){
-              this.board[s.getRow()][s.getCol()] = fillSpotVal;
+              this.board[s.getRow()][col] = fillSpotVal;
               changes = true;
             }
           }
@@ -335,7 +372,7 @@ class sudoku
             if(s != null){
               fillSpotVal = fillSpot(s);
               if(fillSpotVal != 0){
-                this.board[s.getRow()][s.getCol()] = fillSpotVal;
+                this.board[row][col] = fillSpotVal;
                 changes = true;
               }
             }
