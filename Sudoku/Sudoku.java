@@ -48,10 +48,14 @@ class sudoku
     for(int row = 0; row < 9; row++){
       for(int col = 0; col < 9; col++){
         this.board[row][col] = ( (int) (s[row].charAt(col + col/3)) - 48);
+        //cast every value in s[] from string to int.
       }//for
     }//for
   }
 
+  /**
+  * Copy and Construct a new board
+  */
   public sudoku(sudoku p)
   {
     this.board = new int[9][9];
@@ -60,25 +64,31 @@ class sudoku
       for (row = 0; row < 9; row++) {
         for (col = 0; col < 9; col++) {
             this.board[row][col] = p.board[row][col];
+            //Copy the board being passed in
         }
       }
   }
 
+  /**
+  * Convert the board array from int to string and print the board in a
+  * read-able format
+  */
   public String toString()
   {
     String result = "";
     for(int row = 0; row < this.board.length; row++){
       for(int col = 0; col < this.board[row].length; col++){
+        //after every 3 spots, add a divider for read-ability
         if((col != 0) && (col % 3 == 0)){
           result = result + "|";
-        }
+        }//if
         result = result + String.valueOf(this.board[row][col]);
-      }
+      }//for
       result = result + "\n";
       if((row + 1) % 3 == 0){
         result = result + "------------\n";
-      }
-    }
+      }//if
+    }//for
     return result;
   }
 
@@ -109,6 +119,9 @@ class sudoku
     return result;
   }
 
+  /**
+  * Check if the board satisfies all the rules of sudoku
+  */
   public boolean isValid()
   {
     boolean rowResult = true;
@@ -121,6 +134,7 @@ class sudoku
     int val;
     int boxRow;
     int boxCol;
+
     // Check every row
     for(row = 0; row < 9; row++){
       for(val = 1; val < 10; val++){
@@ -130,12 +144,13 @@ class sudoku
             Counter++;
           }//if
           if(Counter > 1){
-            rowResult = false;
+            rowResult = false;//if more than one value exists, row not valid
           }//if
         }//for
       }//for
     }//for
 
+    //Check every Col
     for(col = 0; col < 9; col++){
       for(val = 1; val < 10; val++){
         Counter = 0;
@@ -144,12 +159,13 @@ class sudoku
             Counter++;
           }//if
           if(Counter > 1){
-            colResult = false;
+            colResult = false;//if more than one value exists, column not valid
           }
-        }
-      }
-    }
+        }//for
+      }//for
+    }//for
 
+    //Check every Box
     for(row = 0; row < 9; row += 3){
       for(val = 1; val < 10; val++){
         for(col = 0; col < 9; col += 3){
@@ -158,15 +174,15 @@ class sudoku
             for(boxCol = col; boxCol < col+3; boxCol++){
               if(this.board[boxRow][boxCol] == val){
                 Counter++;
-              }
+              }//if
               if(Counter > 1){
-                boxResult = false;
-              }
-            }
-          }
-        }
-      }
-    }
+                boxResult = false;//if more than one value exists, box not valid
+              }//if
+            }//for
+          }//for
+        }//for
+      }//for
+    }//for
 
     if(rowResult == true && colResult == true && boxResult == true){
       finalResult = true;
@@ -175,20 +191,25 @@ class sudoku
     return finalResult;
   }
 
+  /**
+  * Check if the board is completely solved
+  */
   public boolean isComplete()
   {
     boolean result = true;
+    //If there is a zero in the board, it is not complete
     for(int row = 0; row < 9; row++){
       for(int col = 0; col < 9; col++){
         if(this.board[row][col] == 0){
           result = false;
-        }
-      }
-    }
+        }//if
+      }//for
+    }//for
 
+    //If the board is not valid, it is not complete
     if (!isValid()){
       result = false;
-    }
+    }//if
 
     return result;
   }
@@ -202,8 +223,8 @@ class sudoku
     for(int col = 0; col < 9; col++){
       if(this.board[row][col] == val){
         result = true;
-      }
-    }
+      }//if
+    }//for
     return result;
   }
 
@@ -216,8 +237,8 @@ class sudoku
     for(int row = 0; row < 9; row++){
       if(this.board[row][col] == val){
         result = true;
-      }
-    }
+      }//if
+    }//for
     return result;
   }
 
@@ -233,12 +254,15 @@ class sudoku
       for(int boxCol = col; boxCol < col+3; boxCol++){
         if(this.board[boxRow][boxCol] == val){
           result = true;
-        }
-      }
-    }
+        }//if
+      }//for
+    }//for
     return result;
   }
 
+  /**
+  * Return a value to be inputed at a given spot
+  */
   private int fillSpot(Spot sq)
   {
     int result = 0;
@@ -247,6 +271,7 @@ class sudoku
     int row = sq.getRow();
     int col = sq.getCol();
     for(int value = 1; value < 10; value++){
+      //if the value passes all these conditions, increment the counter
       if(
       (this.board[row][col] == 0) &&
       (!doesRowContain(row, value)) &&
@@ -255,14 +280,20 @@ class sudoku
       ){
         Counter++;
         result = value;
-      }
-    }
+      }//if
+    }//for
+
+    // if only one value passed the conditions, it must be returned
     if(Counter == 1){
       finalResult = result;
-    }
+    }//if
     return finalResult;
   }
 
+  /**
+  * Check if a value can only be inserted at one spot in a specified row,
+  * if so return that spot
+  */
   private Spot rowFill(int row, int val)
   {
     Spot sq = new Spot(0,0);
@@ -270,6 +301,7 @@ class sudoku
     int Counter = 0;
     if(!doesRowContain(row, val)){
       for(int col = 0; col < 9; col++){
+        //if the value passes all of these conditions increment the counter
         if(
         (this.board[row][col] == 0) &&
         (!doesColContain(col, val)) &&
@@ -287,6 +319,10 @@ class sudoku
     return temp;
   }
 
+  /**
+  * Check if a value can only be inserted at one spot in a specified column,
+  * if so return that spot
+  */
   private Spot colFill(int col, int val)
   {
     Spot sq = new Spot(0,0);
@@ -294,6 +330,7 @@ class sudoku
     int Counter = 0;
     if(!doesColContain(col, val)){
       for(int row = 0; row < 9; row++){
+        //if the value passes all of these conditions increment the counter
         if(
         (this.board[row][col] == 0) &&
         (!doesRowContain(row, val)) &&
@@ -302,15 +339,19 @@ class sudoku
           Counter++;
           sq.setRow(row);
           sq.setCol(col);
-        }
-      }
+        }//if
+      }//for
       if(Counter == 1){
         temp = new Spot(sq.getRow(), sq.getCol());
-      }
-    }
+      }//if
+    }//if
     return temp;
   }
 
+  /**
+  * Check if a value can only be inserted at one spot in a specified box,
+  * if so return that spot
+  */
   private Spot boxFill(int rowbox, int colbox, int val)
   {
     rowbox = (rowbox/3) * 3;
@@ -321,6 +362,7 @@ class sudoku
     if(!doesBoxContain(rowbox, colbox, val)){
       for(int row = rowbox; row < rowbox+3; row++){
         for(int col = colbox; col < colbox+3; col++){
+          //if the value passes all of these conditions increment the counter
           if(
           (this.board[row][col] == 0) &&
           (!doesRowContain(row, val)) &&
@@ -329,13 +371,13 @@ class sudoku
             Counter++;
             sq.setRow(row);
             sq.setCol(col);
-          }
-        }
-      }
+          }//if
+        }//for
+      }//for
       if(Counter == 1){
         temp = new Spot(sq.getRow(), sq.getCol());
-      }
-    }
+      }//if
+    }//if
     return temp;
   }
 
@@ -349,6 +391,8 @@ class sudoku
 
     while(changes == true){
       changes = false;
+
+      //fill spots based on rowFill
       for(row = 0; row < 9; row++){
         for(val = 1; val < 10; val++){
           s = rowFill(row, val);
@@ -359,36 +403,39 @@ class sudoku
         }//for
       }//for
 
+      //fill spots based on colFill
+      for(col = 0; col < 9; col++){
+        for(val = 1; val < 10; val++){
+          s = colFill(col, val);
+          if(s != null){
+            this.board[s.getRow()][s.getCol()] = val;
+            changes = true;
+          }//if
+        }//for
+      }//for
+
+      //fill spots based on boxFill
+      for(row = 0; row < 9; row++){
         for(col = 0; col < 9; col++){
           for(val = 1; val < 10; val++){
-            s = colFill(col, val);
+            s = boxFill(row, col, val);
             if(s != null){
               this.board[s.getRow()][s.getCol()] = val;
               changes = true;
             }//if
           }//for
         }//for
+      }//for
 
-        for(row = 0; row < 9; row++){
-          for(col = 0; col < 9; col++){
-            for(val = 1; val < 10; val++){
-              s = boxFill(row, col, val);
-              if(s != null){
-                this.board[s.getRow()][s.getCol()] = val;
-                changes = true;
-              }//if
-            }//for
-          }//for
+      //fill spots based on fillSpot
+      for(row = 0; row < 9; row++){
+        for(col = 0; col < 9; col++){
+          if(this.board[row][col] == 0){
+            s = new Spot(row, col);
+            this.board[s.getRow()][s.getCol()] = fillSpot(s);
+          }//if
         }//for
-
-        for(row = 0; row < 9; row++){
-          for(col = 0; col < 9; col++){
-            if(this.board[row][col] == 0){
-              s = new Spot(row, col);
-              this.board[s.getRow()][s.getCol()] = fillSpot(s);
-            }
-          }
-        }
+      }//for
 
     }//while
   }
