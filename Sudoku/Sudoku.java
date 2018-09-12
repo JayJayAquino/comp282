@@ -54,13 +54,14 @@ class sudoku
 
   public sudoku(sudoku p)
   {
-    int temp[][] = new int[9][9];
-    int row, col;
-    for(row = 0; row < 9; row++){
-      for(col = 0; col < 9; col++){
-        temp[row][col] = this.board[row][col];
+    this.board = new int[9][9];
+      int row;
+      int col;
+      for (row = 0; row < 9; row++) {
+        for (col = 0; col < 9; col++) {
+            this.board[row][col] = p.board[row][col];
+        }
       }
-    }
   }
 
   public String toString()
@@ -183,6 +184,10 @@ class sudoku
           result = false;
         }
       }
+    }
+
+    if (!isValid()){
+      result = false;
     }
 
     return result;
@@ -338,49 +343,52 @@ class sudoku
   {
     boolean changes = true;
     Spot s = new Spot(0,0);
-    Spot fillSpotSpot = null;
     int row;
     int col;
-    int box;
     int val;
-    int fillSpotVal;
+
     while(changes == true){
       changes = false;
       for(row = 0; row < 9; row++){
         for(val = 1; val < 10; val++){
           s = rowFill(row, val);
           if(s != null){
-            this.board[row][s.getCol()] = val;
+            this.board[s.getRow()][s.getCol()] = val;
             changes = true;
           }//if
         }//for
       }//for
 
-      if(changes == false){
         for(col = 0; col < 9; col++){
           for(val = 1; val < 10; val++){
             s = colFill(col, val);
             if(s != null){
-              this.board[s.getRow()][col] = val;
+              this.board[s.getRow()][s.getCol()] = val;
               changes = true;
             }//if
           }//for
         }//for
-      }//if
 
-      if(changes == false){
-        for(row = 0; row < 9; row += 3){
-          for(col = 0; col < 9; col += 3){
+        for(row = 0; row < 9; row++){
+          for(col = 0; col < 9; col++){
             for(val = 1; val < 10; val++){
               s = boxFill(row, col, val);
               if(s != null){
-                this.board[row][col] = val;
+                this.board[s.getRow()][s.getCol()] = val;
                 changes = true;
               }//if
             }//for
           }//for
         }//for
-      }//if
+
+        for(row = 0; row < 9; row++){
+          for(col = 0; col < 9; col++){
+            if(this.board[row][col] == 0){
+              s = new Spot(row, col);
+              this.board[s.getRow()][s.getCol()] = fillSpot(s);
+            }
+          }
+        }
 
     }//while
   }
