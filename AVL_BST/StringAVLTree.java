@@ -58,7 +58,7 @@ class StringAVLTree
 
   public StringAVLTree()
   {
-    //
+    this.root = null;
   }
 
   private static StringAVLNode rotateRight(StringAVLNode t)
@@ -73,7 +73,7 @@ class StringAVLTree
 
   public int height()
   {
-    //
+    int height;
   }
 
   public int leafCt()
@@ -93,12 +93,21 @@ class StringAVLTree
 
   public void insert(String str)
   {
-    //
+    root = insert(str, this.root);
   }
 
   private StringAVLNode insert(String str, StringAVLNode t)
   {
-    //
+    //empty tree
+    if(tree == null){
+      tree = new StringAVLNode(str);
+    }else if(t.getItem() == str){
+      //do nothing since item is in tree
+    }else if(t.getItem().compareTo(str) < 0){
+      t.setLeft(insert(str, t.getLeft()));
+    }else{
+      t.setRight(insert(str, t.getRight()));
+    }
   }
 
   public static String myName()

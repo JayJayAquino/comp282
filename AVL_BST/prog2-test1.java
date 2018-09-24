@@ -1,4 +1,4 @@
-public class Test1 {
+public class prog2-test1 {
 
 	public static void main(String[] args) {
 		StringAVLTreeXtra t = new StringAVLTreeXtra();
@@ -6,10 +6,10 @@ public class Test1 {
 		int line = 1;
 		char action;
 		String s = "imaoinaoioaoipaoiqaoilaoikaoikdikgikfikeo";
-		
+
 		// add lines like this when you have delete working
 		// s = s + "dkeodkfodpao";
-		
+
 		do {
 			action = s.charAt(0);
 			if (action == 'i') {   // insert
@@ -37,7 +37,7 @@ class StringAVLTreeXtra extends StringAVLTree {
 	public StringAVLTreeXtra() {
 		super();
 	}
-	
+
 	public StringAVLNode getRoot() {
 		return root;
 	}
