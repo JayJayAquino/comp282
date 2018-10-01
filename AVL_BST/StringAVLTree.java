@@ -62,20 +62,21 @@ class StringAVLTree
     this.root = null;
   }
 
-  private static StringAVLNode rotateRight(StringAVLNode t)
-  {
-    t.getLeft().setRight(t);
-    t.setLeft(null);
+  private static StringAVLNode rotateRight(StringAVLNode t) {
+    StringAVLNode node = t.getLeft();
 
-    return t;
+    node.setRight(t);
+
+    return node;
   }
 
   private static StringAVLNode rotateLeft(StringAVLNode t)
   {
-    t.getRight().setLeft(t);
-    t.setRight(null);
+    StringAVLNode node = t.getRight();
 
-    return t;
+    node.setLeft(t);
+
+    return node;
   }
 
   public int height()
@@ -125,7 +126,7 @@ class StringAVLTree
 
   public int balanced()
   {
-    return int balanced(root);
+    return balanced(root);
   }
 
   private int balanced(StringAVLNode t)
@@ -135,7 +136,7 @@ class StringAVLTree
     if(t == null){
       //Tree is empty or done traversing
       output = 0;
-    }else if(t.getBalance == 0){
+    }else if(t.getBalance() == 0){
       //Found Balanced node and continue recursively searching
       output = 1 + balanced(t.getLeft()) + balanced(t.getRight());
     }else{
@@ -148,12 +149,52 @@ class StringAVLTree
 
   public String successor(String str)
   {
-    //
+    String output = null;
+
+    if(root == null){
+      //dont do the recursive call
+    }else{
+      output = successor(str, root);
+    }
+
+    return output;
+  }
+
+  private String successor(String str, StringAVLNode t)
+  {
+    StringAVLNode parent = null;
+    String output;
+
+    if(str.compareTo(t.getItem()) == 0){
+      if(t.getRight() == null){
+        if(parent.getLeft() == t){
+          output = parent.getItem();
+        }else{
+          //come back to this later
+        }
+      }else if(t.getRight().getLeft() == null){
+        output = t.getRight().getItem();
+      }else{
+        t = t.getRight();
+        while(t.getLeft() != null){
+          t = t.getLeft();
+        }
+        output = t.getItem();
+      }
+    }else if(str.compareTo(t.getItem()) < 0){
+      parent = t;
+      output = successor(str, t.getLeft());
+    }else{
+      parent = t;
+      output = successor(str, t.getRight());
+    }
+
+    return output;
   }
 
   public void insert(String str)
   {
-    root = insert(str, this.root);
+    root = insert(str, root);
   }
 
   private StringAVLNode insert(String str, StringAVLNode t)
@@ -166,6 +207,7 @@ class StringAVLTree
     }else if(t.getItem() == str){
       //do nothing since item is in tree
     }else if(str.compareTo(t.getItem()) < 0){
+      //Node we want to insert is less than current node
       originalBalance = t.getLeft().getBalance();
       t.setLeft(insert(str, t.getLeft()));
       newBalance = t.getLeft().getBalance();
@@ -176,9 +218,16 @@ class StringAVLTree
         //left of here
       }
     }else{
+      //Node we want to insert is greater than current node
       originalBalance = t.getRight().getBalance();
       t.setRight(insert(str, t.getRight()));
       newBalance = t.getRight().getBalance();
+      if((originalBalance == 0) && ((newBalance == 1) || (newBalance == -1))){
+        t.setBalance(t.getBalance() + 1);
+      }
+      if(t.getBalance() == 2){
+        //left off here
+      }
     }// end if-block
 
     return t;
