@@ -14,6 +14,7 @@ class StringAVLNode
     this.item = str;
     this.left = null;
     this.right = null;
+    this.balance = 0;
   }
 
   public int getBalance()
@@ -63,12 +64,18 @@ class StringAVLTree
 
   private static StringAVLNode rotateRight(StringAVLNode t)
   {
-    //
+    t.getLeft().setRight(t);
+    t.setLeft(null);
+
+    return t;
   }
 
   private static StringAVLNode rotateLeft(StringAVLNode t)
   {
-    //
+    t.getRight().setLeft(t);
+    t.setRight(null);
+
+    return t;
   }
 
   public int height()
@@ -162,14 +169,19 @@ class StringAVLTree
       originalBalance = t.getLeft().getBalance();
       t.setLeft(insert(str, t.getLeft()));
       newBalance = t.getLeft().getBalance();
-      if((originalBalance == 0) && (newBalance == 1)){
-
+      if((originalBalance == 0) && ((newBalance == 1) || (newBalance == -1))){
+        t.setBalance(t.getBalance() - 1);
+      }
+      if(t.getBalance() == 2){
+        //left of here
       }
     }else{
       originalBalance = t.getRight().getBalance();
       t.setRight(insert(str, t.getRight()));
       newBalance = t.getRight().getBalance();
     }// end if-block
+
+    return t;
   }
 
   public static String myName()
