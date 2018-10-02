@@ -91,7 +91,9 @@ class StringAVLTree
     int output = 0;
 
     if(t != null){
+      //recursively go down the left subtree
       leftTreeCounter = height(t.getLeft());
+      //recursively go down the right subtree
       rightTreeCounter = height(t.getRight());
       if(leftTreeCounter > rightTreeCounter){
         output = leftTreeCounter + 1;
@@ -149,46 +151,34 @@ class StringAVLTree
 
   public String successor(String str)
   {
-    String output = null;
-
+    StringAVLNode output = null;
     if(root == null){
-      //dont do the recursive call
+      //do nothing since there is no tree
     }else{
       output = successor(str, root);
     }
 
-    return output;
+    return output.getItem();
   }
 
-  private String successor(String str, StringAVLNode t)
+  private StringAVLNode successor(String str, StringAVLNode t)
   {
-    StringAVLNode parent = null;
-    String output;
-
-    if(str.compareTo(t.getItem()) == 0){
-      if(t.getRight() == null){
-        if(parent.getLeft() == t){
-          output = parent.getItem();
-        }else{
-          //come back to this later
+    if(t == null){
+      //value not found
+      output = "value not found";
+    }else if(t.getItem() == str){
+      if(t.getRight() != null){
+        StringAVLNode temp = t.getRight();
+        while(temp.getLeft() != null){
+          temp = temp.getLeft();
         }
-      }else if(t.getRight().getLeft() == null){
-        output = t.getRight().getItem();
-      }else{
-        t = t.getRight();
-        while(t.getLeft() != null){
-          t = t.getLeft();
-        }
-        output = t.getItem();
+        successor = temp;
       }
-    }else if(str.compareTo(t.getItem()) < 0){
-      parent = t;
-      output = successor(str, t.getLeft());
+      StringAVLNode output; = successor
     }else{
-      parent = t;
-      output = successor(str, t.getRight());
+      StringAVLNode successor = t;
+      t = successor(str, t);
     }
-
     return output;
   }
 
