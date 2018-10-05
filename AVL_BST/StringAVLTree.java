@@ -156,33 +156,41 @@ class StringAVLTree
   public String successor(String str)
   {
     StringAVLNode output = null;
-    if(root == null){
-      //do nothing since there is no tree
-    }else{
-      output = successor(str, root);
-    }
+    StringAVLNode lastLeft = null;
+
+    output = successor(str, root, lastLeft);
 
     return output.getItem();
   }
 
-  private StringAVLNode successor(String str, StringAVLNode t)
+  private StringAVLNode successor(String str, StringAVLNode t, StringAVLNode lastLeft)
   {
+    StringAVLNode output = null;
+    StringAVLNode temp;
+    StringAVLNode successor;
+
     if(t == null){
       //value not found
-      output = "value not found";
+      output = null;
+    }else if(str.compareTo(t.getItem()) < 0){
+      lastLeft = t;
+      t = successor(str, t.getLeft(), lastLeft);
+    }else if(str.compareTo(t.getItem()) > 0){
+      t = successor(str, t.getRight(), lastLeft);
     }else if(t.getItem() == str){
-      if(t.getRight() != null){
-        StringAVLNode temp = t.getRight();
+      if(t.getRight() == null){
+        successor = lastLeft;
+      }else{
+        temp = t.getRight();
         while(temp.getLeft() != null){
           temp = temp.getLeft();
         }
         successor = temp;
       }
-      StringAVLNode output = successor;
-    }else{
-      StringAVLNode successor = t;
-      t = successor(str, t);
+
+      output = successor;
     }
+
     return output;
   }
 
@@ -195,6 +203,9 @@ class StringAVLTree
   {
     int originalBalance;
     int newBalance;
+    StringAVLNode temp;
+    int tempBalance = 0;
+
     //empty tree
     if(t == null){
       t = new StringAVLNode(str);
@@ -202,29 +213,100 @@ class StringAVLTree
       //do nothing since item is in tree
     }else if(str.compareTo(t.getItem()) < 0){
       //Node we want to insert is less than current node
-      originalBalance = t.getLeft().getBalance();
+      if(t.getLeft() != null){
+        originalBalance = t.getLeft().getBalance();
+      }else{
+        originalBalance = 0;
+      }
       t.setLeft(insert(str, t.getLeft()));
       newBalance = t.getLeft().getBalance();
-      if((originalBalance == 0) && ((newBalance == 1) || (newBalance == -1))){
+
+      if((originalBalance == 0) && (newBalance != 0)){
         t.setBalance(t.getBalance() - 1);
       }
-      if(t.getBalance() == 2){
-        //do things
-      }else if(t.getBalance() == -2){
-        //do things
+
+      if(t.getBalance() == -2){
+        temp = t.getLeft().getRight();
+        if(temp != null){
+          tempBalance = temp.getBalance();
+        }
+
+        if((t.getLeft().getLeft() != null) && (temp == null)){
+          //Single Right rotate
+          t = rotateRight(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }else if(tempBalance == -1){
+          //Special case left
+          t.setLeft(rotateLeft(t.getLeft()));
+          t = rotateRight(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(1);
+        }else if(tempBalance == 1){
+          //Special case right
+          t.setLeft(rotateLeft(t.getLeft()));
+          t = rotateRight(t);
+          t.getLeft().setBalance(-1);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }else if(temp != null){
+          //Simple left right rotate
+          t.setLeft(rotateLeft(t.getLeft()));
+          t = rotateRight(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }
       }
+
     }else{
       //Node we want to insert is greater than current node
-      originalBalance = t.getRight().getBalance();
+      if(t.getRight() != null){
+        originalBalance = t.getRight().getBalance();
+      }else{
+        originalBalance = 0;
+      }
       t.setRight(insert(str, t.getRight()));
       newBalance = t.getRight().getBalance();
-      if((originalBalance == 0) && ((newBalance == 1) || (newBalance == -1))){
+      if((originalBalance == 0) && (newBalance != 0)){
         t.setBalance(t.getBalance() + 1);
       }
+
       if(t.getBalance() == 2){
-        //left off here
-      }else if(t.getBalance() == -2){
-        //do more things
+        temp = t.getRight().getLeft();
+        if(temp != null){
+          tempBalance = temp.getBalance();
+        }
+
+        if((t.getRight().getRight() != null) && (temp == null)){
+          //Single left rotate
+          t = rotateLeft(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }else if(tempBalance == -1){
+          //Speical case left
+          t.setRight(rotateRight(t.getRight()));
+          t = rotateLeft(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(1);
+        }else if(tempBalance == 1){
+          //Special case right
+          t.setRight(rotateRight(t.getRight()));
+          t = rotateLeft(t);
+          t.getLeft().setBalance(-1);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }else if(temp != null){
+          t.setRight(rotateRight(t.getRight()));
+          t = rotateLeft(t);
+          t.getLeft().setBalance(0);
+          t.setBalance(0);
+          t.getRight().setBalance(0);
+        }
       }
     }// end if-block
 
