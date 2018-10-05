@@ -63,20 +63,24 @@ class StringAVLTree
   }
 
   private static StringAVLNode rotateRight(StringAVLNode t) {
-    StringAVLNode node = t.getLeft();
+    StringAVLNode tempRoot = t.getLeft();
+    StringAVLNode tempChild = tempRoot.getRight();
 
-    node.setRight(t);
+    tempRoot.setRight(t);
+    t.setLeft(tempChild);
 
-    return node;
+    return tempRoot;
   }
 
   private static StringAVLNode rotateLeft(StringAVLNode t)
   {
-    StringAVLNode node = t.getRight();
+    StringAVLNode tempRoot = t.getRight();
+    StringAVLNode tempChild = tempRoot.getLeft();
 
-    node.setLeft(t);
+    tempRoot.setLeft(t);
+    t.setRight(tempChild);
 
-    return node;
+    return tempRoot;
   }
 
   public int height()
@@ -174,7 +178,7 @@ class StringAVLTree
         }
         successor = temp;
       }
-      StringAVLNode output; = successor
+      StringAVLNode output = successor;
     }else{
       StringAVLNode successor = t;
       t = successor(str, t);
@@ -194,7 +198,7 @@ class StringAVLTree
     //empty tree
     if(t == null){
       t = new StringAVLNode(str);
-    }else if(t.getItem() == str){
+    }else if(str.compareTo(t.getItem()) == 0){
       //do nothing since item is in tree
     }else if(str.compareTo(t.getItem()) < 0){
       //Node we want to insert is less than current node
@@ -205,7 +209,9 @@ class StringAVLTree
         t.setBalance(t.getBalance() - 1);
       }
       if(t.getBalance() == 2){
-        //left of here
+        //do things
+      }else if(t.getBalance() == -2){
+        //do things
       }
     }else{
       //Node we want to insert is greater than current node
@@ -217,6 +223,8 @@ class StringAVLTree
       }
       if(t.getBalance() == 2){
         //left off here
+      }else if(t.getBalance() == -2){
+        //do more things
       }
     }// end if-block
 
