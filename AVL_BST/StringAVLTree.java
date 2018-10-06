@@ -155,12 +155,17 @@ class StringAVLTree
 
   public String successor(String str)
   {
-    StringAVLNode output = null;
+    StringAVLNode output;
     StringAVLNode lastLeft = null;
+    String finalResult = null;
 
     output = successor(str, root, lastLeft);
+    if(output != null){
+      finalResult = output.getItem();
+    }
 
-    return output.getItem();
+
+    return finalResult;
   }
 
   private StringAVLNode successor(String str, StringAVLNode t, StringAVLNode lastLeft)
@@ -177,7 +182,7 @@ class StringAVLTree
       t = successor(str, t.getLeft(), lastLeft);
     }else if(str.compareTo(t.getItem()) > 0){
       t = successor(str, t.getRight(), lastLeft);
-    }else if(t.getItem() == str){
+    }else if(str.compareTo(t.getItem()) == 0){
       if(t.getRight() == null){
         successor = lastLeft;
       }else{
@@ -187,7 +192,6 @@ class StringAVLTree
         }
         successor = temp;
       }
-
       output = successor;
     }
 
@@ -237,14 +241,14 @@ class StringAVLTree
           t.getLeft().setBalance(0);
           t.setBalance(0);
           t.getRight().setBalance(0);
-        }else if(tempBalance == -1){
+        }else if(tempBalance == 1){
           //Special case left
           t.setLeft(rotateLeft(t.getLeft()));
           t = rotateRight(t);
           t.getLeft().setBalance(0);
           t.setBalance(0);
           t.getRight().setBalance(1);
-        }else if(tempBalance == 1){
+        }else if(tempBalance == -1){
           //Special case right
           t.setLeft(rotateLeft(t.getLeft()));
           t = rotateRight(t);
