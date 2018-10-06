@@ -104,7 +104,7 @@ public class Test2 {
 	        } else {  // no other choice, then compare
 				s = s.substring(1, s.length());
 				System.out.print(line++ + ". ");
-				if (t.toString().compareTo(ans[ansct]) == 0) {
+				if (t.toString2().compareTo(ans[ansct]) == 0) {
 					System.out.print(" Answers match.   ");
 					if ( line % 4 == 1)
 						System.out.println();

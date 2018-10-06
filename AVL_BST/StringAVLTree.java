@@ -63,24 +63,17 @@ class StringAVLTree
   }
 
   private static StringAVLNode rotateRight(StringAVLNode t) {
-    StringAVLNode tempRoot = t.getLeft();
-    StringAVLNode tempChild = tempRoot.getRight();
-
-    tempRoot.setRight(t);
-    t.setLeft(tempChild);
-
-    return tempRoot;
+      StringAVLNode output = t.getLeft();
+      t.setLeft(t.getLeft().getRight());
+      output.setRight(t);
+      return output;
   }
 
-  private static StringAVLNode rotateLeft(StringAVLNode t)
-  {
-    StringAVLNode tempRoot = t.getRight();
-    StringAVLNode tempChild = tempRoot.getLeft();
-
-    tempRoot.setLeft(t);
-    t.setRight(tempChild);
-
-    return tempRoot;
+  private static StringAVLNode rotateLeft(StringAVLNode t) {
+      StringAVLNode output = t.getRight();
+      t.setRight(t.getRight().getLeft());
+      output.setLeft(t);
+      return output;
   }
 
   public int height()
