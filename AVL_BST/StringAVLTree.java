@@ -62,18 +62,22 @@ class StringAVLTree
     this.root = null;
   }
 
-  private static StringAVLNode rotateRight(StringAVLNode t) {
-      StringAVLNode output = t.getLeft();
-      t.setLeft(t.getLeft().getRight());
-      output.setRight(t);
-      return output;
+  private static StringAVLNode rotateRight(StringAVLNode t)
+  {
+    StringAVLNode output = t.getLeft();
+
+    t.setLeft(t.getLeft().getRight());
+    output.setRight(t);
+    return output;
   }
 
-  private static StringAVLNode rotateLeft(StringAVLNode t) {
-      StringAVLNode output = t.getRight();
-      t.setRight(t.getRight().getLeft());
-      output.setLeft(t);
-      return output;
+  private static StringAVLNode rotateLeft(StringAVLNode t)
+  {
+    StringAVLNode output = t.getRight();
+    
+    t.setRight(t.getRight().getLeft());
+    output.setLeft(t);
+    return output;
   }
 
   public int height()
@@ -140,7 +144,7 @@ class StringAVLTree
       output = 1 + balanced(t.getLeft()) + balanced(t.getRight());
     }else{
       //Recursively search
-      output = balanced(t.getLeft()) + balanced(t.getLeft());
+      output = balanced(t.getLeft()) + balanced(t.getRight());
     }
 
     return output;
@@ -156,7 +160,6 @@ class StringAVLTree
     if(output != null){
       finalResult = output.getItem();
     }
-
 
     return finalResult;
   }
@@ -200,8 +203,7 @@ class StringAVLTree
   {
     int originalBalance;
     int newBalance;
-    StringAVLNode temp;
-    int tempBalance = 0;
+    int tempBalance;
 
     //empty tree
     if(t == null){
@@ -212,97 +214,96 @@ class StringAVLTree
       //Node we want to insert is less than current node
       if(t.getLeft() != null){
         originalBalance = t.getLeft().getBalance();
+        t.setLeft(insert(str, t.getLeft()));
+        newBalance = t.getLeft().getBalance();
+        if((originalBalance == 0) && (newBalance != 0)){
+          t.setBalance(t.getBalance() - 1);
+        }
       }else{
-        originalBalance = 0;
-      }
-      t.setLeft(insert(str, t.getLeft()));
-      newBalance = t.getLeft().getBalance();
-
-      if((originalBalance == 0) && (newBalance != 0)){
+        //can just insert and change balance
+        t.setLeft(insert(str, t.getLeft()));
         t.setBalance(t.getBalance() - 1);
       }
 
       if(t.getBalance() == -2){
-        temp = t.getLeft().getRight();
-        if(temp != null){
-          tempBalance = temp.getBalance();
-        }
-
-        if((t.getLeft().getLeft() != null) && (temp == null)){
+        //rotations must happen
+        if(str.compareTo(t.getLeft().getItem()) < 0){
           //Single Right rotate
           t = rotateRight(t);
-          t.getLeft().setBalance(0);
           t.setBalance(0);
           t.getRight().setBalance(0);
-        }else if(tempBalance == 1){
-          //Special case left
-          t.setLeft(rotateLeft(t.getLeft()));
-          t = rotateRight(t);
-          t.getLeft().setBalance(0);
-          t.setBalance(0);
-          t.getRight().setBalance(1);
-        }else if(tempBalance == -1){
-          //Special case right
-          t.setLeft(rotateLeft(t.getLeft()));
-          t = rotateRight(t);
-          t.getLeft().setBalance(-1);
-          t.setBalance(0);
-          t.getRight().setBalance(0);
-        }else if(temp != null){
-          //Simple left right rotate
-          t.setLeft(rotateLeft(t.getLeft()));
-          t = rotateRight(t);
-          t.getLeft().setBalance(0);
-          t.setBalance(0);
-          t.getRight().setBalance(0);
+        }else if(str.compareTo(t.getLeft().getItem()) > 0){
+          tempBalance = t.getLeft().getRight().getBalance();
+          if(tempBalance == 0){
+            //Simple Left Right rotate
+            t.setLeft(rotateLeft(t.getLeft()));
+            t = rotateRight(t);
+            t.setBalance(0);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(0);
+          }else if(tempBalance == -1){
+            //Special Left Right case 1
+            t.setLeft(rotateLeft(t.getLeft()));
+            t = rotateRight(t);
+            t.setBalance(0);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(1);
+          }else if(tempBalance == 1){
+            //Special Left Right case 2
+            t.setLeft(rotateLeft(t.getLeft()));
+            t = rotateRight(t);
+            t.setBalance(-1);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(0);
+          }
         }
       }
-
     }else{
       //Node we want to insert is greater than current node
       if(t.getRight() != null){
         originalBalance = t.getRight().getBalance();
+        t.setRight(insert(str, t.getRight()));
+        newBalance = t.getRight().getBalance();
+        if((originalBalance == 0) && (newBalance != 0)){
+          t.setBalance(t.getBalance() + 1);
+        }
       }else{
-        originalBalance = 0;
-      }
-      t.setRight(insert(str, t.getRight()));
-      newBalance = t.getRight().getBalance();
-      if((originalBalance == 0) && (newBalance != 0)){
+        //can just insert and change balance
+        t.setRight(insert(str, t.getRight()));
         t.setBalance(t.getBalance() + 1);
       }
 
       if(t.getBalance() == 2){
-        temp = t.getRight().getLeft();
-        if(temp != null){
-          tempBalance = temp.getBalance();
-        }
-
-        if((t.getRight().getRight() != null) && (temp == null)){
-          //Single left rotate
+        if(str.compareTo(t.getRight().getItem()) > 0){
+          //Single Left rotate
           t = rotateLeft(t);
           t.getLeft().setBalance(0);
           t.setBalance(0);
-          t.getRight().setBalance(0);
-        }else if(tempBalance == -1){
-          //Speical case left
-          t.setRight(rotateRight(t.getRight()));
-          t = rotateLeft(t);
-          t.getLeft().setBalance(0);
-          t.setBalance(0);
-          t.getRight().setBalance(1);
-        }else if(tempBalance == 1){
-          //Special case right
-          t.setRight(rotateRight(t.getRight()));
-          t = rotateLeft(t);
-          t.getLeft().setBalance(-1);
-          t.setBalance(0);
-          t.getRight().setBalance(0);
-        }else if(temp != null){
-          t.setRight(rotateRight(t.getRight()));
-          t = rotateLeft(t);
-          t.getLeft().setBalance(0);
-          t.setBalance(0);
-          t.getRight().setBalance(0);
+        }else if(str.compareTo(t.getRight().getItem()) < 0){
+          //Right Left Rotate
+          tempBalance = t.getRight().getLeft().getBalance();
+          if(tempBalance == 0){
+            //simple case
+            t.setRight(rotateRight(t.getRight()));
+            t = rotateLeft(t);
+            t.setBalance(0);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(0);
+          }else if(tempBalance == -1){
+            //special case 1
+            t.setRight(rotateRight(t.getRight()));
+            t = rotateLeft(t);
+            t.setBalance(0);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(1);
+          }else if(tempBalance == 1){
+            //special case 2
+            t.setRight(rotateRight(t.getRight()));
+            t = rotateLeft(t);
+            t.setBalance(-1);
+            t.getLeft().setBalance(0);
+            t.getRight().setBalance(0);
+          }
         }
       }
     }// end if-block
