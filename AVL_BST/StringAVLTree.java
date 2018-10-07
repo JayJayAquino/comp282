@@ -1,7 +1,7 @@
 // John Aquino, Comp282 Mon/Wed, Assignment 2
 // Date:
 //
-// Description:
+// Description: This program
 
 class StringAVLNode
 {
@@ -62,6 +62,12 @@ class StringAVLTree
     this.root = null;
   }
 
+  /**
+   * Rotate right at a specified node
+   * @param  t [The node of imbalance]
+   *
+   * @return   [rotated sub-tree]
+   */
   private static StringAVLNode rotateRight(StringAVLNode t)
   {
     StringAVLNode output = t.getLeft();
@@ -71,6 +77,12 @@ class StringAVLTree
     return output;
   }
 
+  /**
+   * Rotate left at a specified node
+   * @param  t [the node of imbalance]
+   *
+   * @return   [rotated sub-tree]
+   */
   private static StringAVLNode rotateLeft(StringAVLNode t)
   {
     StringAVLNode output = t.getRight();
@@ -80,11 +92,20 @@ class StringAVLTree
     return output;
   }
 
+  /**
+   * Return the height of the tree
+   */
   public int height()
   {
     return height(root);
   }
 
+  /**
+   * Recursively calculate the height of tree
+   * @param  t [tree]
+   *
+   * @return   [height of specified tree]
+   */
   private int height(StringAVLNode t)
   {
     int leftTreeCounter;
@@ -92,9 +113,9 @@ class StringAVLTree
     int output = 0;
 
     if(t != null){
-      //recursively go down the left subtree
+      //recursively go down the left sub-tree
       leftTreeCounter = height(t.getLeft());
-      //recursively go down the right subtree
+      //recursively go down the right sub-tree
       rightTreeCounter = height(t.getRight());
       if(leftTreeCounter > rightTreeCounter){
         output = leftTreeCounter + 1;
@@ -106,11 +127,21 @@ class StringAVLTree
     return output;
   }
 
+  /**
+   * Return the number of leaves in a tree
+   */
   public int leafCt()
   {
     return leafCt(root);
   }
 
+  /**
+   * Recursively calculate the number of leaves in a tree
+   * @param  t [used for sub-tree traversing, and determing if a node
+   *            is a leaf]
+   *
+   * @return   [number of leaves]
+   */
   private int leafCt(StringAVLNode t)
   {
     int output;
@@ -121,17 +152,26 @@ class StringAVLTree
       //Current node is a leaf
       output = 1;
     }else{
-      //recursively go into the left and right subtree
+      //recursively go into the left and right sub-tree
       output = leafCt(t.getLeft()) + leafCt(t.getRight());
     }
     return output;
   }
 
+  /**
+   * Return the number of perfectly balanced nodes in a tree
+   */
   public int balanced()
   {
     return balanced(root);
   }
 
+  /**
+   * Recursively calculate the number of perfectly balanced nodes
+   * @param  t [used for sub-tree traversing]
+   *
+   * @return   [number of perfectly balanced nodes]
+   */
   private int balanced(StringAVLNode t)
   {
     int output;
@@ -150,12 +190,20 @@ class StringAVLTree
     return output;
   }
 
+  /**
+   * Find a nodes inorder successor
+   * @param  str [item of node]
+   *
+   * @return     [return the inorder successor if it exists, otherwise
+   *              return null]
+   */
   public String successor(String str)
   {
     StringAVLNode output;
     StringAVLNode lastLeft = null;
     String finalResult = null;
 
+    // Begin recursive call
     output = successor(str, root, lastLeft);
     if(output != null){
       finalResult = output.getItem();
@@ -164,6 +212,15 @@ class StringAVLTree
     return finalResult;
   }
 
+  /**
+   * Recursively find the in order successor of a specified node
+   * @param  str      [value ]
+   * @param  t        [used for sub-tree traversing]
+   * @param  lastLeft [keep track of a left child's parent]
+   *
+   * @return          [the node that is the inorder successor or null if
+   *                  it doesnt exist]
+   */
   private StringAVLNode successor(String str, StringAVLNode t, StringAVLNode lastLeft)
   {
     StringAVLNode output = null;
@@ -174,12 +231,18 @@ class StringAVLTree
       //value not found
       output = null;
     }else if(str.compareTo(t.getItem()) < 0){
+      //Traverse left, and keep track of left child's parent
       lastLeft = t;
       t = successor(str, t.getLeft(), lastLeft);
+      output = t;
     }else if(str.compareTo(t.getItem()) > 0){
+      //Traverse right
       t = successor(str, t.getRight(), lastLeft);
+      output = t;
     }else if(str.compareTo(t.getItem()) == 0){
+      //Found node and begin finding inorder successor
       if(t.getRight() == null){
+        //if there is no right child, the inorder successor is the parent
         successor = lastLeft;
       }else{
         temp = t.getRight();
@@ -194,11 +257,23 @@ class StringAVLTree
     return output;
   }
 
+  /**
+   * Insert a node into a tree
+   * @param str [value of node to be inserted]
+   */
   public void insert(String str)
   {
     root = insert(str, root);
   }
 
+  /**
+   * Recursively traverse and find the location in which the value must be
+   * inserted
+   * @param  str [value of node to be inserted]
+   * @param  t   [used for sub-tree traversing]
+   *
+   * @return     [return only used for traversing purposes]
+   */
   private StringAVLNode insert(String str, StringAVLNode t)
   {
     int originalBalance;
@@ -217,6 +292,7 @@ class StringAVLTree
         t.setLeft(insert(str, t.getLeft()));
         newBalance = t.getLeft().getBalance();
         if((originalBalance == 0) && (newBalance != 0)){
+          //if height of sub-tree changes, adjust balance
           t.setBalance(t.getBalance() - 1);
         }
       }else{
@@ -265,6 +341,7 @@ class StringAVLTree
         t.setRight(insert(str, t.getRight()));
         newBalance = t.getRight().getBalance();
         if((originalBalance == 0) && (newBalance != 0)){
+          //if height of sub-tree changes, adjust balance
           t.setBalance(t.getBalance() + 1);
         }
       }else{
@@ -274,6 +351,7 @@ class StringAVLTree
       }
 
       if(t.getBalance() == 2){
+        //rotations must happen
         if(str.compareTo(t.getRight().getItem()) > 0){
           //Single Left rotate
           t = rotateLeft(t);
@@ -283,21 +361,21 @@ class StringAVLTree
           //Right Left Rotate
           tempBalance = t.getRight().getLeft().getBalance();
           if(tempBalance == 0){
-            //simple case
+            //Simple case
             t.setRight(rotateRight(t.getRight()));
             t = rotateLeft(t);
             t.setBalance(0);
             t.getLeft().setBalance(0);
             t.getRight().setBalance(0);
           }else if(tempBalance == -1){
-            //special case 1
+            //Special case 1
             t.setRight(rotateRight(t.getRight()));
             t = rotateLeft(t);
             t.setBalance(0);
             t.getLeft().setBalance(0);
             t.getRight().setBalance(1);
           }else if(tempBalance == 1){
-            //special case 2
+            //Special case 2
             t.setRight(rotateRight(t.getRight()));
             t = rotateLeft(t);
             t.setBalance(0);
