@@ -74,7 +74,7 @@ class StringAVLTree
   private static StringAVLNode rotateLeft(StringAVLNode t)
   {
     StringAVLNode output = t.getRight();
-    
+
     t.setRight(t.getRight().getLeft());
     output.setLeft(t);
     return output;
@@ -252,8 +252,8 @@ class StringAVLTree
             //Special Left Right case 2
             t.setLeft(rotateLeft(t.getLeft()));
             t = rotateRight(t);
-            t.setBalance(-1);
-            t.getLeft().setBalance(0);
+            t.setBalance(0);
+            t.getLeft().setBalance(-1);
             t.getRight().setBalance(0);
           }
         }
@@ -300,8 +300,8 @@ class StringAVLTree
             //special case 2
             t.setRight(rotateRight(t.getRight()));
             t = rotateLeft(t);
-            t.setBalance(-1);
-            t.getLeft().setBalance(0);
+            t.setBalance(0);
+            t.getLeft().setBalance(-1);
             t.getRight().setBalance(0);
           }
         }
