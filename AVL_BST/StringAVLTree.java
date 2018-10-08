@@ -1,7 +1,9 @@
 // John Aquino, Comp282 Mon/Wed, Assignment 2
-// Date:
+// Date: October 7th 2018
 //
-// Description: This program
+// Description: This program contains all the logic behind building AVL trees.
+// It can also return information about the tree such as its height, number
+// of balanced nodes, and number of leaves in the tree.
 
 class StringAVLNode
 {
@@ -214,7 +216,7 @@ class StringAVLTree
 
   /**
    * Recursively find the in order successor of a specified node
-   * @param  str      [value ]
+   * @param  str      [Item of specified node]
    * @param  t        [used for sub-tree traversing]
    * @param  lastLeft [keep track of a left child's parent]
    *
