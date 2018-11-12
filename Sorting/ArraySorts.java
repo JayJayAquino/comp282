@@ -56,10 +56,10 @@ class ArraySorts{
     return lastS1;
   }
 
-  public static int twoPointPartition(int a[], int lf, int rt, int pivot)
-  {
-
-  }
+  // public static int twoPointPartition(int a[], int lf, int rt, int pivot)
+  // {
+  //
+  // }
 
   public static void QuickSort1(int a[], int n, int cutoff)
   {
@@ -125,26 +125,8 @@ class ArraySorts{
   //
   public static void AlmostQS1(int a[], int n, int cutoff)
   {
-    AlmostQS1(a,0,n-1, cutoff);
+    QuickSort1(a,0,n-1, cutoff);
     // insertionSort(a, a.length);
-  }
-
-  private static void AlmostQS1(int a[], int lf, int rt, int cutoff)
-  {
-    while(rt - lf + 1 >= cutoff){
-      Random r = new Random();
-      int pivot = r.nextInt((rt-lf)+1) + lf;
-      pivot = bookPartition(a,lf,rt, pivot);
-      int leftSize = (pivot - 1) - lf;
-      int rightSize = rt - (pivot + 1);
-      if(leftSize < rightSize){
-        AlmostQS1(a,lf,pivot-1,cutoff);
-        lf = pivot+1;
-      }else{
-        AlmostQS1(a,pivot+1,rt,cutoff);
-        rt = pivot-1;
-      }
-    }
   }
 
   public static String myName()
@@ -163,7 +145,7 @@ class ArraySorts{
           int rand = r.nextInt(100);
           a[i] = rand;
       }
-      // QuickSort1(a,a.length,20);
+      // QuickSort1(a,a.length,1);
       // int[] a = {20, 18, 100, 23, 34, 8, 3, 90, 9, 42, 24};
       // insertionSort(a,a.length);
       // AlmostQS1(a,a.length,1);
