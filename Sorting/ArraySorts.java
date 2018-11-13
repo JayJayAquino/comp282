@@ -63,18 +63,19 @@ class ArraySorts{
     int pivotValue = a[pivot];
     int temp;
 
-    while(leftPointer < rightPointer){
-      System.out.println("in a loop");
+    while(leftPointer <= rightPointer){
+      // System.out.println("in a loop");
       if(a[leftPointer] < pivotValue){
         leftPointer++;
       }else{
         if(a[rightPointer] > pivotValue){
           rightPointer--;
         }else{
-          System.out.println("swapping");
+          //swap
           temp = a[leftPointer];
           a[leftPointer] = a[rightPointer];
           a[rightPointer] = temp;
+
           leftPointer++;
           rightPointer--;
         }
@@ -111,23 +112,23 @@ class ArraySorts{
   public static void QuickSort2(int a[], int n, int cutoff)
   {
     QuickSort2(a,0,n-1,cutoff);
-    insertionSort(a,a.length);
+    // insertionSort(a,a.length);
   }
+
   private static void QuickSort2(int a[], int lf, int rt, int cutoff)
   {
     pair p;
     while(rt - lf + 1 >= cutoff){
       Random r = new Random();
-      int pivot = lf;
+      int pivot = r.nextInt((rt-lf)+1) + lf;
       p = twoPointPartition(a,lf,rt,pivot);
       int leftSize = (p.right) - lf;
       int rightSize = rt - (p.left);
       if(leftSize < rightSize){
-        System.out.println("doing recursion");
-        QuickSort3(a,lf,p.right,cutoff);
+        QuickSort2(a,lf,p.right,cutoff);
         lf = p.left;
       }else{
-        QuickSort3(a,p.left,rt,cutoff);
+        QuickSort2(a,p.left,rt,cutoff);
         rt = p.right;
       }
     }
@@ -144,8 +145,7 @@ class ArraySorts{
   private static void QuickSort3(int a[], int lf, int rt, int cutoff)
   {
     while(rt - lf + 1 >= cutoff){
-      Random r = new Random();
-      int pivot = r.nextInt((rt-lf)+1) + lf;
+      int pivot = lf;
       pivot = bookPartition(a,lf,rt, pivot);
       int leftSize = (pivot - 1) - lf;
       int rightSize = rt - (pivot + 1);
@@ -158,10 +158,31 @@ class ArraySorts{
       }
     }
   }
-  // public static void QuickSort4(int a[], int n, int cutoff)
-  // {
-  //   //
-  // }
+  public static void QuickSort4(int a[], int n, int cutoff)
+  {
+    QuickSort4(a,0,n-1,cutoff);
+    // insertionSort(a,a.length);
+  }
+
+  private static void QuickSort4(int a[], int lf, int rt, int cutoff)
+  {
+    pair p;
+    while(rt - lf + 1 >= cutoff){
+      int pivot = lf;
+      p = twoPointPartition(a,lf,rt,pivot);
+      int leftSize = (p.right) - lf;
+      int rightSize = rt - (p.left);
+      if(leftSize < rightSize){
+        QuickSort4(a,lf,p.right,cutoff);
+        lf = p.left;
+      }else{
+        QuickSort4(a,p.left,rt,cutoff);
+        rt = p.right;
+      }
+    }
+
+  }
+
   // public static void QuickSort5(int a[], int n, int cutoff)
   // {
   //   //
@@ -182,19 +203,21 @@ class ArraySorts{
   //AlmostQS2
 
     public static void main(String[] args){
-      int arraySize = 20;
+      int arraySize = 100;
       int[] a = new int[arraySize];
       Random r = new Random();
       for (int i = 0; i < arraySize; i++) {
-          int rand = r.nextInt(100);
+          int rand = r.nextInt(1000);
           a[i] = rand;
       }
+
       // QuickSort1(a,a.length,1);
+      // QuickSort3(a,a.length,5);
       // int[] a = {20, 18, 100, 23, 34, 8, 3, 90, 9, 42, 24};
       // insertionSort(a,a.length);
       // AlmostQS1(a,a.length,1);
-      // QuickSort3(a,a.length,20);
-      QuickSort2(a,a.length,2);
+      // QuickSort2(a,a.length,1);
+      QuickSort4(a,a.length,1);
 
       for (int i = 0; i < a.length; i++) {
         System.out.println(a[i]);
