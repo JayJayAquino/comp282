@@ -112,7 +112,7 @@ class ArraySorts{
   public static void QuickSort2(int a[], int n, int cutoff)
   {
     QuickSort2(a,0,n-1,cutoff);
-    // insertionSort(a,a.length);
+    insertionSort(a,a.length);
   }
 
   private static void QuickSort2(int a[], int lf, int rt, int cutoff)
@@ -138,7 +138,7 @@ class ArraySorts{
   public static void QuickSort3(int a[], int n, int cutoff)
   {
     QuickSort3(a,0,n-1,cutoff);
-    // insertionSort(a,n);
+    insertionSort(a,n);
   }
 
 
@@ -161,7 +161,7 @@ class ArraySorts{
   public static void QuickSort4(int a[], int n, int cutoff)
   {
     QuickSort4(a,0,n-1,cutoff);
-    // insertionSort(a,a.length);
+    insertionSort(a,a.length);
   }
 
   private static void QuickSort4(int a[], int lf, int rt, int cutoff)
@@ -188,9 +188,16 @@ class ArraySorts{
   //   //
   // }
   //
+
   public static void AlmostQS1(int a[], int n, int cutoff)
   {
     QuickSort1(a,0,n-1, cutoff);
+    // insertionSort(a, a.length);
+  }
+
+  public static void AlmostQS2(int a[], int n, int cutoff)
+  {
+    QuickSort2(a,0,n-1,cutoff);
     // insertionSort(a, a.length);
   }
 
@@ -199,8 +206,6 @@ class ArraySorts{
     return "John Aquino";
   }
 
-  //AlmostQS1
-  //AlmostQS2
 
     public static void main(String[] args){
       int arraySize = 100;
@@ -217,7 +222,8 @@ class ArraySorts{
       // insertionSort(a,a.length);
       // AlmostQS1(a,a.length,1);
       // QuickSort2(a,a.length,1);
-      QuickSort4(a,a.length,1);
+      // QuickSort4(a,a.length,1);
+      AlmostQS2(a,a.length,1);
 
       for (int i = 0; i < a.length; i++) {
         System.out.println(a[i]);
