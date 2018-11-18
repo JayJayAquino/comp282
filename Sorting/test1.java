@@ -182,8 +182,6 @@ public class test1 {
 				"Mids" };
 
 		int numSorts = SortType.length;
-		if (!ArraySorts.implemented3partition())
-			numSorts -= 2;
 		System.out.println("Testing " + ArraySorts.myName() + "'s program.");
 
 		// First check to see if they sort small arrays properly
@@ -338,7 +336,7 @@ public class test1 {
 		else if (which == 4)
 			ArraySorts.QuickSort4(a, n, 50);
 		else if (which == 5)
-			ArraySorts.QuickSort_3Partition(a, n, 50);
+			ArraySorts.QuickSort5(a, n, 50);
 		else if (which == 6)
 			ArraySorts.QuickSort1(a, n, 2);
 		else if (which == 7)
@@ -348,7 +346,7 @@ public class test1 {
 		else if (which == 9)
 			ArraySorts.QuickSort4(a, n, 2);
 		else if (which == 10)
-			ArraySorts.QuickSort_3Partition(a, n, 2);
+			ArraySorts.QuickSort5(a, n, 2);
 		else if (which == 11)
 			ArraySorts.AlmostQS1(a, n, 2);
 		else if (which == 12)

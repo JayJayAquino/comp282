@@ -32,9 +32,11 @@ class ArraySorts{
   private static int bookPartition(int a[], int lf, int rt, int pivot)
   {
     int tempItem;
+    int save;
     int firstUnknown;
     int lastS1 = lf;
     int pivotValue = a[pivot];
+    boolean duplicate = true;
 
     tempItem = a[lf];
     a[lf] = a[pivot];
@@ -46,6 +48,14 @@ class ArraySorts{
         tempItem = a[firstUnknown];
         a[firstUnknown] = a[lastS1];
         a[lastS1] = tempItem;
+      }else if(a[firstUnknown] == pivotValue){
+        if(duplicate){
+          lastS1++;
+          save = a[firstUnknown];
+          a[firstUnknown] = a[lastS1];
+          a[lastS1] = save;
+        }
+        duplicate = !duplicate;
       }
     }
 
@@ -124,12 +134,12 @@ class ArraySorts{
       }
     }
 
-    temp = a[leftPivot];
-    a[leftPivot] = a[lastSmall];
+    temp = a[lf];
+    a[lf] = a[lastSmall];
     a[lastSmall] = temp;
 
-    temp = a[rightPivot];
-    a[rightPivot] = a[firstBig];
+    temp = a[rt];
+    a[rt] = a[firstBig];
     a[firstBig] = temp;
 
     return new pair(lastSmall, firstBig);
@@ -138,7 +148,7 @@ class ArraySorts{
   public static void QuickSort1(int a[], int n, int cutoff)
   {
     QuickSort1(a,0,n-1, cutoff);
-    insertionSort(a, a.length);
+    insertionSort(a, n);
   }
 
   private static void QuickSort1(int a[], int lf, int rt, int cutoff)
@@ -162,7 +172,7 @@ class ArraySorts{
   public static void QuickSort2(int a[], int n, int cutoff)
   {
     QuickSort2(a,0,n-1,cutoff);
-    insertionSort(a,a.length);
+    insertionSort(a,n);
   }
 
   private static void QuickSort2(int a[], int lf, int rt, int cutoff)
@@ -188,7 +198,7 @@ class ArraySorts{
   public static void QuickSort3(int a[], int n, int cutoff)
   {
     QuickSort3(a,0,n-1,cutoff);
-    insertionSort(a,a.length);
+    insertionSort(a,n);
   }
 
 
@@ -211,7 +221,7 @@ class ArraySorts{
   public static void QuickSort4(int a[], int n, int cutoff)
   {
     QuickSort4(a,0,n-1,cutoff);
-    insertionSort(a,a.length);
+    insertionSort(a,n);
   }
 
   private static void QuickSort4(int a[], int lf, int rt, int cutoff)
@@ -235,7 +245,7 @@ class ArraySorts{
   public static void QuickSort5(int a[], int n, int cutoff)
   {
     QuickSort5(a,0,n-1,cutoff);
-    // insertionSort(a,a.length);
+    // insertionSort(a,n);
   }
 
   private static void QuickSort5(int a[], int lf, int rt, int cutoff)
@@ -245,17 +255,17 @@ class ArraySorts{
       int pivot1 = r.nextInt((rt-lf)+1) + lf;
       int pivot2 = r.nextInt((rt-lf)+1) + lf;
       pair pivot = threePartition(a,lf,rt,pivot1,pivot2);
-      int leftSize = (pivot.left - 1) - lf;
-      int middleSize = (pivot.right - 1) - (pivot.left + 1);
-      int rightSize = rt - (pivot.right + 1);
+      int leftSize = pivot.left - lf;
+      int middleSize = pivot.right - pivot.left - 1;
+      int rightSize = rt - pivot.right;
       if((leftSize > middleSize) && (leftSize > rightSize)){
         QuickSort5(a,pivot.left+1,pivot.right-1,cutoff);
         QuickSort5(a,pivot.right+1,rt,cutoff);
-        lf = pivot.left-1;
+        rt = pivot.left - 1;
       }else if((rightSize > middleSize) && (rightSize > leftSize)){
         QuickSort5(a,pivot.left+1,pivot.right-1,cutoff);
         QuickSort5(a,lf,pivot.left-1,cutoff);
-        rt = pivot.right+1;
+        lf = pivot.right+1;
       }else{
         QuickSort5(a,lf,pivot.left-1,cutoff);
         QuickSort5(a,pivot.right+1,rt,cutoff);
@@ -264,6 +274,19 @@ class ArraySorts{
       }
     }
   }
+
+  public static void HeapSortBU(int a[], int n) {
+/*     *//*   int parent = (n-1) / 2;
+       int lfchild = (n * 2) + 1;
+       int rtchild = (n * 2) + 2;*//*
+
+       for (int firstunknown = 0; firstunknown < n; firstunknown++) {
+
+       }*/
+   }
+
+   // top down
+   public static void HeapSortTD(int a[], int n) { }
 
 
   public static void AlmostQS1(int a[], int n, int cutoff)
@@ -285,17 +308,18 @@ class ArraySorts{
 
 
     public static void main(String[] args){
-      int arraySize = 50;
-      int[] a = new int[arraySize];
-      Random r = new Random();
-      for (int i = 0; i < arraySize; i++) {
-          int rand = r.nextInt(100);
-          a[i] = rand;
-      }
+      // int size = 100;
+      // int arraySize = size;
+      // int[] a = new int[arraySize];
+      // Random r = new Random();
+      // for (int i = 0; i < arraySize; i++) {
+      //     int rand = r.nextInt(size*10);
+      //     a[i] = rand;
+      // }
 
       // QuickSort1(a,a.length,1);
       // QuickSort3(a,a.length,10);
-      // int[] a = {20, 18, 100, 23, 34, 8, 3, 90, 9, 42, 24};
+      int[] a = {25, 20 ,42};
       // insertionSort(a,a.length);
       // AlmostQS1(a,a.length,1);
       // QuickSort2(a,a.length,1);
