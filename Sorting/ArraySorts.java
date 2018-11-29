@@ -292,22 +292,121 @@ class ArraySorts{
     }
   }
 
-  public static void HeapSortTD(int a[], int n)
+  private static void BuildBU(int a[], int n)
   {
-    //i * 2 + 1 = left child
-    //i * 2 + 2 = right child
-    //parent = i-1/2
-    //
+    int save;
+    int currentPos;
+    int leftChild;
+    int rightChild;
+    int parent;
 
+    for(int startPos = (n/2)-1; startPos >= 0; startPos++){
+      currentPos = startPos;
+      leftChild = (currentPos*2)+1;
+      rightChild =(currentPos*2)+2;
+      save = a[currentPos];
+      // if(a[leftChild] > a[rightChild])
+    }
+  }
 
+  private static void BuildTD(int a[], int n)
+  {
+    int save;
+    int currentPos;
+    int parent;
 
+    for(int startPos = 0; startPos < n; startPos++){
+      currentPos = startPos;
+      parent = (currentPos-1)/2;
+      save = a[currentPos];
+      while((currentPos != 0) && (save > a[parent])){
+        a[currentPos] = a[parent]; //shift
+        currentPos = parent;
+        parent = (currentPos-1)/2;
+      }
+      a[currentPos] = save;
+    }
+  }
+
+  private static void TrickleUp()
+  {
+
+  }
+
+  private static void TrickleDown(int a[], int top, int bottom)
+  {
+    int leftChild = (top*2)+1;
+    int rightChild = (top*2)+2;
+    int greaterChild;
+    int currentPos = top;
+    int save = a[top];
+
+    if(rightChild > bottom){
+      greaterChild = leftChild;
+    }else{
+      if(a[leftChild] >= a[rightChild]){
+        greaterChild = leftChild;
+      }else{
+        greaterChild = rightChild;
+      }
+    }
+
+    while((currentPos < bottom) && (greaterChild <= bottom) && (save < a[greaterChild])){
+      // System.out.println("shift " + a[greaterChild]);
+      // System.out.println("current position: " + currentPos);
+      a[currentPos] = a[greaterChild];
+      currentPos = greaterChild;
+      // System.out.println("current pos is now: " + currentPos);
+      leftChild = (currentPos * 2) + 1;
+      rightChild = (currentPos * 2) + 2;
+
+      if(rightChild > bottom){
+        greaterChild = leftChild;
+      }else{
+        if(a[leftChild] >= a[rightChild]){
+          greaterChild = leftChild;
+        }else{
+          greaterChild = rightChild;
+        }
+      }//if
+
+    }//while
+    a[currentPos] = save;
   }
 
   public static void HeapSortBU(int a[], int n)
   {
-    //
+    //build-for loop
+    //sort for loop
+    int temp;
+    int last = n-1;
+    for(int build = last; build >= 0; build--){
+      TrickleDown(a, build, last);
+    }
+
+    for(int i = 0; i < n; i++){
+      temp = a[0];
+      a[0] = a[last];
+      a[last] = temp;
+      TrickleDown(a,0,last-1);
+      last--;
+    }
   }
 
+
+  public static void HeapSortTD(int a[], int n)
+  {
+    // int temp;
+    // BuildTD(a, n);
+    //
+    // for(int size = n - 1; size >= 0; size--){
+    //   temp = a[0];
+    //   a[0] = a[size];
+    //   a[size] = temp;
+    //   // System.out.println("in first loop");
+    //   // TrickleDown(a,n);
+    // }
+  }
 
 
   public static void AlmostQS1(int a[], int n, int cutoff)
@@ -322,6 +421,11 @@ class ArraySorts{
     // insertionSort(a, a.length);
   }
 
+  public static void AlmostQS5(int a[], int n, int cutoff)
+  {
+    QuickSort5(a,0,n-1,cutoff);
+  }
+
   public static String myName()
   {
     return "John Aquino";
@@ -329,7 +433,7 @@ class ArraySorts{
 
 
     public static void main(String[] args){
-      int size = 100;
+      int size = 1000000;
       int arraySize = size;
       int[] a = new int[arraySize];
       Random r = new Random();
@@ -338,25 +442,28 @@ class ArraySorts{
           a[i] = rand;
       }
 
+      // int[] a = {24,16,11,28,30,5,9,42,54,73};
+
       // QuickSort1(a,a.length,1);
       // QuickSort3(a,a.length,10);
-      // int[] a = {25, 20 ,42};
       // insertionSort(a,a.length);
       // AlmostQS1(a,a.length,1);
       // QuickSort2(a,a.length,1);
       // QuickSort4(a,a.length,1);
       // AlmostQS2(a,a.length,1);
-      QuickSort5(a,a.length,1);
+      // QuickSort5(a,a.length,1);
+      // HeapSortTD(a,a.length);
+      HeapSortBU(a,a.length);
 
       for (int i = 0; i < a.length; i++) {
         System.out.println(a[i]);
       }
 
-      for(int j = 0; j < a.length - 1; j++){
-        if(a[j] > a[j+1]){
-          System.out.println("bad at " + j);
-        }
-      }
+      // for(int j = 0; j < a.length - 1; j++){
+      //   if(a[j] > a[j+1]){
+      //     System.out.println("bad at " + j);
+      //   }
+      // }
 
     }
 }
