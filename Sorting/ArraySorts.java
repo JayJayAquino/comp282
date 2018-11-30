@@ -328,10 +328,10 @@ class ArraySorts{
     }
   }
 
-  private static void TrickleUp()
-  {
-
-  }
+  // private static void TrickleUp()
+  // {
+  //
+  // }
 
   private static void TrickleDown(int a[], int top, int bottom)
   {
@@ -396,16 +396,17 @@ class ArraySorts{
 
   public static void HeapSortTD(int a[], int n)
   {
-    // int temp;
-    // BuildTD(a, n);
-    //
-    // for(int size = n - 1; size >= 0; size--){
-    //   temp = a[0];
-    //   a[0] = a[size];
-    //   a[size] = temp;
-    //   // System.out.println("in first loop");
-    //   // TrickleDown(a,n);
-    // }
+    int temp;
+    int last = n-1;
+    BuildTD(a, n);
+
+    for(int i = 0; i < n; i++){
+      temp = a[0];
+      a[0] = a[last];
+      a[last] = temp;
+      TrickleDown(a,0,last-1);
+      last--;
+    }
   }
 
 
@@ -452,18 +453,18 @@ class ArraySorts{
       // QuickSort4(a,a.length,1);
       // AlmostQS2(a,a.length,1);
       // QuickSort5(a,a.length,1);
-      // HeapSortTD(a,a.length);
-      HeapSortBU(a,a.length);
+      HeapSortTD(a,a.length);
+      // HeapSortBU(a,a.length);
 
       for (int i = 0; i < a.length; i++) {
         System.out.println(a[i]);
       }
 
-      // for(int j = 0; j < a.length - 1; j++){
-      //   if(a[j] > a[j+1]){
-      //     System.out.println("bad at " + j);
-      //   }
-      // }
+      for(int j = 0; j < a.length - 1; j++){
+        if(a[j] > a[j+1]){
+          System.out.println("bad at " + j);
+        }
+      }
 
     }
 }
