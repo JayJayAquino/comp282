@@ -73,24 +73,40 @@ class ArraySorts{
     int pivotValue = a[pivot];
     int temp;
 
-    while(leftPointer <= rightPointer){
-      // System.out.println("in a loop");
-      if(a[leftPointer] < pivotValue){
-        leftPointer++;
-      }else{
-        if(a[rightPointer] > pivotValue){
-          rightPointer--;
-        }else{
-          //swap
-          temp = a[leftPointer];
-          a[leftPointer] = a[rightPointer];
-          a[rightPointer] = temp;
+    // while(leftPointer <= rightPointer){
+    //   if(a[leftPointer] < pivotValue){
+    //     leftPointer++;
+    //   }else{
+    //     if(a[rightPointer] > pivotValue){
+    //       rightPointer--;
+    //     }else{
+    //       //swap
+    //       temp = a[leftPointer];
+    //       a[leftPointer] = a[rightPointer];
+    //       a[rightPointer] = temp;
+    //
+    //       leftPointer++;
+    //       rightPointer--;
+    //     }
+    //   }
+    // }//while
 
-          leftPointer++;
-          rightPointer--;
-        }
+    while(leftPointer <= rightPointer){
+      while(a[leftPointer] < pivotValue){
+        leftPointer++;
       }
-    }//while
+      while(a[rightPointer] > pivotValue){
+        rightPointer--;
+      }
+      if(leftPointer <= rightPointer){
+        temp = a[leftPointer];
+        a[leftPointer] = a[rightPointer];
+        a[rightPointer] = temp;
+
+        leftPointer++;
+        rightPointer--;
+      }
+    }
 
     return new pair(leftPointer, rightPointer);
   }
@@ -300,7 +316,7 @@ class ArraySorts{
     int rightChild;
     int parent;
 
-    for(int startPos = (n/2)-1; startPos >= 0; startPos++){
+    for(int startPos = (n-2)/2; startPos >= 0; startPos++){
       currentPos = startPos;
       leftChild = (currentPos*2)+1;
       rightChild =(currentPos*2)+2;
@@ -434,7 +450,7 @@ class ArraySorts{
 
 
     public static void main(String[] args){
-      int size = 1000000;
+      int size = 1000;
       int arraySize = size;
       int[] a = new int[arraySize];
       Random r = new Random();
@@ -453,8 +469,8 @@ class ArraySorts{
       // QuickSort4(a,a.length,1);
       // AlmostQS2(a,a.length,1);
       // QuickSort5(a,a.length,1);
-      HeapSortTD(a,a.length);
-      // HeapSortBU(a,a.length);
+      // HeapSortTD(a,a.length);
+      HeapSortBU(a,a.length);
 
       for (int i = 0; i < a.length; i++) {
         System.out.println(a[i]);
