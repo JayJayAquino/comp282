@@ -176,11 +176,6 @@ class ArraySorts{
             a[lastSmall] = a[firstUnknown];
             a[firstUnknown] = temp;
             firstUnknown++;
-          }else if(a[firstUnknown] == a[rt]){
-            firstBig--;
-            temp = a[firstBig];
-            a[firstBig] = a[firstUnknown];
-            a[firstUnknown] = temp;
           }
         }else{
           firstUnknown++;
@@ -226,8 +221,7 @@ class ArraySorts{
   {
     //while loop to avoid stack overflow
     while(rt - lf + 1 >= cutoff){
-      Random r = new Random();
-      int pivot = r.nextInt((rt-lf)+1) + lf;// generate random pivot
+      int pivot = lf + (int)(Math.random() * (rt-lf+1));// generate random pivot
       pivot = bookPartition(a,lf,rt, pivot);// partition array
       int leftSize = (pivot - 1) - lf;// calculate size of left partition
       int rightSize = rt - (pivot + 1);// calculate size of right partition
@@ -270,8 +264,7 @@ class ArraySorts{
     pair p;
     //while loop to avoid stack overflow
     while(rt - lf + 1 >= cutoff){
-      Random r = new Random();
-      int pivot = r.nextInt((rt-lf)+1) + lf;
+      int pivot = lf + (int)(Math.random() * (rt-lf+1));
       p = twoPointPartition(a,lf,rt,pivot); // pair of pivots
       int leftSize = (p.right) - lf;
       int rightSize = rt - (p.left);
@@ -364,8 +357,8 @@ class ArraySorts{
   {
     while(rt - lf + 1 >= cutoff){
       Random r = new Random();
-      int pivot1 = r.nextInt((rt-lf)+1) + lf;
-      int pivot2 = r.nextInt((rt-lf)+1) + lf;
+      int pivot1 = lf + (int)(Math.random() * (rt-lf+1));
+      int pivot2 = lf + (int)(Math.random() * (rt-lf+1));
       pair pivot = threePartition(a,lf,rt,pivot1,pivot2);
       int leftSize = pivot.left - lf;
       int middleSize = pivot.right - pivot.left - 1;
