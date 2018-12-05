@@ -1,3 +1,10 @@
+// John Aquino, Comp282 Mon/Wed, Assignment 3
+// Date: Decemeber 5th 2018
+//
+// Description: This program contains various sorting algorithms, some
+// of which have slightly different implementations.
+// Sorting algorithms are: InsertionSort, QuickSort, and HeapSort
+
 import java.math.*;
 import java.util.Random;
 
@@ -52,6 +59,7 @@ class ArraySorts{
     int pivotValue = a[pivot];
     boolean duplicate = true;
 
+    //swap
     tempItem = a[lf];
     a[lf] = a[pivot];
     a[pivot] = tempItem;
@@ -59,20 +67,24 @@ class ArraySorts{
     for(firstUnknown = lf + 1; firstUnknown <= rt; firstUnknown++){
       if(a[firstUnknown] < pivotValue){
         lastS1++;
+        //swap
         tempItem = a[firstUnknown];
         a[firstUnknown] = a[lastS1];
         a[lastS1] = tempItem;
       }else if(a[firstUnknown] == pivotValue){
+        //duplicate boolean toggle
         if(duplicate){
           lastS1++;
+          //swap
           save = a[firstUnknown];
           a[firstUnknown] = a[lastS1];
           a[lastS1] = save;
         }
         duplicate = !duplicate;
-      }
-    }
+      }//if
+    }//for
 
+    //swap
     tempItem = a[lf];
     a[lf] = a[lastS1];
     a[lastS1] = tempItem;
@@ -86,8 +98,8 @@ class ArraySorts{
    * @param  lf    [left most element]
    * @param  rt    [right most element]
    * @param  pivot [position of pivot]
-   * @return       [a pair of positions indicating where the two partitioned
-   *               arrays start and end]
+   * @return       [a pair of positions indicating where
+   *                the two partitioned arrays start and end]
    */
   private static pair twoPointPartition(int a[], int lf, int rt, int pivot)
   {
@@ -184,10 +196,12 @@ class ArraySorts{
       }
     }
 
+    //swap
     temp = a[lf];
     a[lf] = a[lastSmall];
     a[lastSmall] = temp;
 
+    //swap
     temp = a[rt];
     a[rt] = a[firstBig];
     a[firstBig] = temp;
@@ -221,10 +235,11 @@ class ArraySorts{
   {
     //while loop to avoid stack overflow
     while(rt - lf + 1 >= cutoff){
-      int pivot = lf + (int)(Math.random() * (rt-lf+1));// generate random pivot
+      //create random pivot
+      int pivot = lf + (int)(Math.random() * (rt-lf+1));
       pivot = bookPartition(a,lf,rt, pivot);// partition array
-      int leftSize = (pivot - 1) - lf;// calculate size of left partition
-      int rightSize = rt - (pivot + 1);// calculate size of right partition
+      int leftSize = (pivot - 1) - lf;//calculate size of left partition
+      int rightSize = rt - (pivot + 1);//calculate size of right partition
       //continue to sort the smaller partition, and "pretend" the other
       //partition is finished
       if(leftSize < rightSize){
@@ -268,14 +283,15 @@ class ArraySorts{
       p = twoPointPartition(a,lf,rt,pivot); // pair of pivots
       int leftSize = (p.right) - lf;
       int rightSize = rt - (p.left);
+      //continue sorting smaller partition
       if(leftSize < rightSize){
         QuickSort2(a,lf,p.right,cutoff);
         lf = p.left;
       }else{
         QuickSort2(a,p.left,rt,cutoff);
         rt = p.right;
-      }
-    }
+      }//if
+    }//while
 
   }
 
@@ -340,6 +356,13 @@ class ArraySorts{
     }
   }
 
+  /**
+   * Driver method for QuickSort5, uses threePartition and
+   * continues until cutoff is reached
+   * @param a[]    [array of integers]
+   * @param n      [size of array]
+   * @param cutoff [description]
+   */
   public static void QuickSort5(int a[], int n, int cutoff)
   {
     QuickSort5(a,0,n-1,cutoff);
@@ -347,22 +370,27 @@ class ArraySorts{
   }
 
   /**
-   * [QuickSort5 description]
-   * @param a[]    [description]
-   * @param lf     [description]
-   * @param rt     [description]
-   * @param cutoff [description]
+   * Uses threePartition and selects 2 random pivots and divides the
+   * array into 3 partitions and continues partitioning until cutoff
+   * is reached
+   * @param a[]    [array of integers]
+   * @param lf     [left most element]
+   * @param rt     [right most element]
+   * @param cutoff [partitioned array's max size]
    */
   private static void QuickSort5(int a[], int lf, int rt, int cutoff)
   {
+    //while loop to avoid stack overflow
     while(rt - lf + 1 >= cutoff){
-      Random r = new Random();
+      //select 2 random pivots
       int pivot1 = lf + (int)(Math.random() * (rt-lf+1));
       int pivot2 = lf + (int)(Math.random() * (rt-lf+1));
       pair pivot = threePartition(a,lf,rt,pivot1,pivot2);
+      //calculate sizes
       int leftSize = pivot.left - lf;
       int middleSize = pivot.right - pivot.left - 1;
       int rightSize = rt - pivot.right;
+      //continue sorting the smaller partition
       if((leftSize >= middleSize) && (leftSize >= rightSize)){
         QuickSort5(a,pivot.left+1,pivot.right-1,cutoff);
         QuickSort5(a,pivot.right+1,rt,cutoff);
@@ -380,25 +408,38 @@ class ArraySorts{
     }
   }
 
+  /**
+   * Used by HeapSortTD, builds intitial heap by trickling up
+   * @param a[] [array of integers]
+   * @param n   [size of array]
+   */
   private static void BuildTD(int a[], int n)
   {
     int save;
     int currentPos;
     int parent;
 
+    //start at root and check every node
     for(int startPos = 0; startPos < n; startPos++){
-      currentPos = startPos;
-      parent = (currentPos-1)/2;
-      save = a[currentPos];
+      currentPos = startPos; //intialize current position
+      parent = (currentPos-1)/2; // calculate parent
+      save = a[currentPos]; //save value in case of shift
       while((currentPos != 0) && (save > a[parent])){
         a[currentPos] = a[parent]; //shift
-        currentPos = parent;
-        parent = (currentPos-1)/2;
+        currentPos = parent; //re-calculate
+        parent = (currentPos-1)/2; //re-calculate
       }
       a[currentPos] = save;
     }
   }
 
+  /**
+   * used by both HeapSortBU and HeapSortTD, trickles specified node
+   * down the heap as far as it can
+   * @param a[]    [array of integer]
+   * @param top    [starting position]
+   * @param bottom [last element in heap]
+   */
   private static void TrickleDown(int a[], int top, int bottom)
   {
     int leftChild = (top*2)+1;
@@ -407,9 +448,11 @@ class ArraySorts{
     int currentPos = top;
     int save = a[top];
 
+    //if right child's position exceeds the heap, left child must
+    //be the greater child
     if(rightChild > bottom){
       greaterChild = leftChild;
-    }else{
+    }else{//determine which child has greater value
       if(a[leftChild] >= a[rightChild]){
         greaterChild = leftChild;
       }else{
@@ -417,15 +460,17 @@ class ArraySorts{
       }
     }
 
+    //trickle down by shifting until condition's are broken
     while((currentPos < bottom) &&
     (greaterChild <= bottom) &&
     (save < a[greaterChild])){
 
-      a[currentPos] = a[greaterChild];
-      currentPos = greaterChild;
-      leftChild = (currentPos * 2) + 1;
-      rightChild = (currentPos * 2) + 2;
+      a[currentPos] = a[greaterChild]; //shift
+      currentPos = greaterChild; //update position
+      leftChild = (currentPos * 2) + 1; //re-calculate
+      rightChild = (currentPos * 2) + 2;//re-calculate
 
+      //re-determine greater child
       if(rightChild > bottom){
         greaterChild = leftChild;
       }else{
@@ -440,52 +485,75 @@ class ArraySorts{
     a[currentPos] = save;
   }
 
+  /**
+   * Builds heap by trickling down, and sorts heap by trickling down
+   * @param a[] [array of integers]
+   * @param n   [size of array]
+   */
   public static void HeapSortBU(int a[], int n)
   {
     int temp;
     int last = n-1;
+
+    //build heap
     for(int build = last; build >= 0; build--){
       TrickleDown(a, build, last);
-    }
+    }//for
 
+    //swap first and last element, and "re-build"
     for(int i = 0; i < n; i++){
       temp = a[0];
       a[0] = a[last];
       a[last] = temp;
       TrickleDown(a,0,last-1);
       last--;
-    }
+    }//for
   }
 
-
+  /**
+   * Builds heap by trickling up, sorts heap by trickling down
+   * @param a[] [array of integers]
+   * @param n   [size of array]
+   */
   public static void HeapSortTD(int a[], int n)
   {
     int temp;
     int last = n-1;
+
+    //build heap
     BuildTD(a, n);
 
+    //swap and "re-build" heap
     for(int i = 0; i < n; i++){
       temp = a[0];
       a[0] = a[last];
       a[last] = temp;
       TrickleDown(a,0,last-1);
       last--;
-    }
+    }//for
   }
 
-
+  /*
+  QS 1 no call to insertion sort
+   */
   public static void AlmostQS1(int a[], int n, int cutoff)
   {
     QuickSort1(a,0,n-1, cutoff);
     // insertionSort(a, a.length);
   }
 
+  /*
+  QS 2 no call to insertion sort
+   */
   public static void AlmostQS2(int a[], int n, int cutoff)
   {
     QuickSort2(a,0,n-1,cutoff);
     // insertionSort(a, a.length);
   }
 
+  /*
+  QS 5 no call to insertion sort
+   */
   public static void AlmostQS5(int a[], int n, int cutoff)
   {
     QuickSort5(a,0,n-1,cutoff);
@@ -497,39 +565,4 @@ class ArraySorts{
     return "John Aquino";
   }
 
-
-    public static void main(String[] args){
-      int size = 1000;
-      int arraySize = size;
-      int[] a = new int[arraySize];
-      Random r = new Random();
-      for (int i = 0; i < arraySize; i++) {
-          int rand = r.nextInt(size*10);
-          a[i] = rand;
-      }
-
-      // int[] a = {24,16,11,28,30,5,9,42,54,73};
-
-      // QuickSort1(a,a.length,1);
-      // QuickSort3(a,a.length,10);
-      // insertionSort(a,a.length);
-      // AlmostQS1(a,a.length,1);
-      // QuickSort2(a,a.length,1);
-      // QuickSort4(a,a.length,1);
-      // AlmostQS2(a,a.length,1);
-      // QuickSort5(a,a.length,1);
-      // HeapSortTD(a,a.length);
-      HeapSortBU(a,a.length);
-
-      for (int i = 0; i < a.length; i++) {
-        System.out.println(a[i]);
-      }
-
-      for(int j = 0; j < a.length - 1; j++){
-        if(a[j] > a[j+1]){
-          System.out.println("bad at " + j);
-        }
-      }
-
-    }
 }
