@@ -4,15 +4,15 @@ import java.util.*;
 class Edge_Node
 {
   private Vertex_Node target;
-  private Edge_node next;
+  private Edge_Node next;
 
-  public EdgeNode(Vertex_Node t, Edge_node e)
+  public Edge_Node(Vertex_Node t, Edge_Node e)
   {
     target = t;
     next = e;
   }
 
-  public Vertex_node getTarget()
+  public Vertex_Node getTarget()
   {
     return target;
   }
@@ -30,12 +30,14 @@ class Vertex_Node
   private int distance;
   private Vertex_Node parent;
   private Vertex_Node next;
+  private boolean visited;
 
   public Vertex_Node(String s, Vertex_Node v)
   {
     name = s;
     next = v;
     distance = -1;
+    visited = false;
   }
 
   public String getName()
@@ -77,6 +79,17 @@ class Vertex_Node
   {
     parent = n;
   }
+
+  public void setVisited()
+  {
+    visited = true;
+  }
+
+  public boolean getVisited()
+  {
+    return visited;
+  }
+
 }
 
 class Graph
@@ -110,7 +123,7 @@ class Graph
     String inputLine, sourceName, targetName;
     Vertex_Node source = null, target;
     Edge_Node e;
-    StringTokenizer imput;
+    StringTokenizer input;
     BufferedReader inFile = new BufferedReader(new FileReader(fileName));
     inputLine = inFile.readLine();
     while(inputLine != null){
@@ -118,7 +131,7 @@ class Graph
       sourceName = input.nextToken();
       source = findVertex(sourceName);
       if(source == null){
-        head = new Vertex_Node(source, head);
+        head = new Vertex_Node(sourceName, head);
         source = head;
         size++;
       }
@@ -126,8 +139,8 @@ class Graph
         targetName = input.nextToken();
         target = findVertex(targetName);
         if(target == null){
-          head = new Vertex_Node(source, head);
-          source = head;
+          head = new Vertex_Node(targetName, head);
+          target = head;
           size++;
         }
 
@@ -148,5 +161,46 @@ class Graph
     inFile.close();
     return source;
   }
-  //public void output
+
+  public void output()
+  {
+    Vertex_Node v = head;
+    Edge_Node e;
+    while(v != null){
+      System.out.print(v.getName() + ": ");
+      e = v.getNbrList();
+      while(e != null){
+        System.out.print(e.getTarget().getName() + " ");
+        e = e.getNext();
+      }
+      System.out.println();
+      v = v.getNext();
+    }
+  }
+
+  public void output_bfs(Vertex_Node s)
+  {
+    Queue<String> bfsQueue = new LinkedList<>();
+  }
+
+  public void output_dfs(Vertex_Node s)
+  {
+    //
+  }
+
+  public static boolean implementedDFS()
+  {
+    return false;
+  }
+
+  public String myName()
+  {
+    return "John Aquino";
+  }
+
+  public static void main(String args[]){
+    String fileName = "Graph1.txt";
+    Graph g = new Graph();
+    output_bfs(g.input(fileName));
+  }
 }
