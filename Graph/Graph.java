@@ -80,14 +80,19 @@ class Vertex_Node
     parent = n;
   }
 
-  public void setVisited()
+  public void setMark(boolean mark)
   {
-    visited = true;
+    visited = mark;
   }
 
-  public boolean getVisited()
+  public boolean isMarked()
   {
     return visited;
+  }
+
+  public String toString()
+  {
+    return name;
   }
 
 }
@@ -178,10 +183,86 @@ class Graph
     }
   }
 
-  public void output_bfs(Vertex_Node s)
-  {
-    Queue<String> bfsQueue = new LinkedList<>();
-  }
+  // public void output_bfs(Vertex_Node s)
+  // {
+  //   breadthFirstSearch(s);
+  //   Vertex_Node vertex = head;
+  //
+  //   do{
+  //     breadthFirstSearch(vertex);
+  //     vertex = vertex.getNext();
+  //   }while(vertex.getNext() != null);
+  //
+  // }
+  //
+  // private void breadthFirstSearch(Vertex_Node s)
+  // {
+  //   Queue<Vertex_Node> queue = new LinkedList<>();
+  //
+  //       if (!s.isMarked()) {
+  //           Vertex_Node parent = null;
+  //           queue.add(s);
+  //           s.setDistance(0);
+  //           s.setMark(true);
+  //           System.out.println(queue.peek().getName() + ",   " + queue.peek().getDistance() + ",   " + parent);
+  //           while (!queue.isEmpty()) {
+  //               if(!queue.peek().isMarked()){
+  //                   System.out.println(queue.peek().getName() + ",   " + queue.peek().getDistance() + ",   " + parent);
+  //               }
+  //               parent = queue.poll();
+  //               Edge_Node neighbors = parent.getNbrList();
+  //               while (neighbors != null) {
+  //                   if (!neighbors.getTarget().isMarked()) {
+  //                       neighbors.getTarget().setMark(true);
+  //                       neighbors.getTarget().setDistance(parent.getDistance()+1);
+  //                       System.out.println(neighbors.getTarget().getName() + ",   " + neighbors.getTarget().getDistance() + ",   " + parent);
+  //                       queue.add(neighbors.getTarget());
+  //                   }
+  //                   neighbors = neighbors.getNext();
+  //               }
+  //
+  //           }
+  //       }
+  // }
+
+  public void output_bfs(Vertex_Node s) {
+          bfs(s);
+          Vertex_Node vertex = head;
+
+          do {
+              bfs(vertex);
+              vertex = vertex.getNext();
+          } while (vertex.getNext() != null);
+      }
+
+      private void bfs(Vertex_Node s) {
+          Queue<Vertex_Node> queue = new LinkedList<>();
+
+          if (!s.isMarked()) {
+              Vertex_Node parent = null;
+              queue.add(s);
+              s.setDistance(0);
+              s.setMark(true);
+              System.out.println(queue.peek().getName() + ",   " + queue.peek().getDistance() + ",   " + parent);
+              while (!queue.isEmpty()) {
+                  if(!queue.peek().isMarked()){
+                      System.out.println(queue.peek().getName() + ",   " + queue.peek().getDistance() + ",   " + parent);
+                  }
+                  parent = queue.poll();
+                  Edge_Node neighbors = parent.getNbrList();
+                  while (neighbors != null) {
+                      if (!neighbors.getTarget().isMarked()) {
+                          neighbors.getTarget().setMark(true);
+                          neighbors.getTarget().setDistance(parent.getDistance()+1);
+                          System.out.println(neighbors.getTarget().getName() + ",   " + neighbors.getTarget().getDistance() + ",   " + parent);
+                          queue.add(neighbors.getTarget());
+                      }
+                      neighbors = neighbors.getNext();
+                  }
+
+              }
+          }
+      }
 
   public void output_dfs(Vertex_Node s)
   {
@@ -193,14 +274,9 @@ class Graph
     return false;
   }
 
-  public String myName()
+  public static String myName()
   {
     return "John Aquino";
   }
 
-  public static void main(String args[]){
-    String fileName = "Graph1.txt";
-    Graph g = new Graph();
-    output_bfs(g.input(fileName));
-  }
 }
